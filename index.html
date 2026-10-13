@@ -52,12 +52,12 @@
       .actions { flex-direction:column; align-items:stretch; }
     }
     .message.success {
-  animation: fadeInUp 0.5s ease;
-}
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+      animation: fadeInUp 0.5s ease;
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
   </style>
 </head>
 <body>
@@ -190,19 +190,19 @@
       </div>
     </form>
 
-<div id="successMessage" class="message success" style="display:none; margin-top:16px; text-align:center; padding:20px;">
-  <div style="font-size:48px; margin-bottom:10px;">✅</div>
-  <div style="font-size:18px; font-weight:bold; margin-bottom:8px;">درخواست شما با موفقیت ثبت شد</div>
-  <div style="font-size:14px; line-height:1.8;">
-    اطلاعات شما در سامانه ثبت گردید. پس از بررسی و ارزیابی شرایط، با شما تماس گرفته خواهد شد.
-    <br>
-    از صبر و همراهی شما سپاسگزاریم. 🌹
-  </div>
-  <button type="button" onclick="document.getElementById('successMessage').style.display='none';" 
-          style="margin-top:14px; background:#0b6f36; color:#fff; border:none; padding:8px 20px; border-radius:6px; cursor:pointer; font-weight:600;">
-    متوجه شدم
-  </button>
-</div>
+    <div id="successMessage" class="message success" style="display:none; margin-top:16px; text-align:center; padding:20px;">
+      <div style="font-size:48px; margin-bottom:10px;">✅</div>
+      <div style="font-size:18px; font-weight:bold; margin-bottom:8px;">درخواست شما با موفقیت ثبت شد</div>
+      <div style="font-size:14px; line-height:1.8;">
+        اطلاعات شما در سامانه ثبت گردید. پس از بررسی و ارزیابی شرایط، با شما تماس گرفته خواهد شد.
+        <br>
+        از صبر و همراهی شما سپاسگزاریم. 🌹
+      </div>
+      <button type="button" onclick="document.getElementById('successMessage').style.display='none';" 
+              style="margin-top:14px; background:#0b6f36; color:#fff; border:none; padding:8px 20px; border-radius:6px; cursor:pointer; font-weight:600;">
+        متوجه شدم
+      </button>
+    </div>
   </div>
 
   <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
@@ -231,11 +231,12 @@
       var form = document.getElementById('desferalForm');
       var pumpStatus = document.getElementById('pumpStatus');
       var oldModelField = document.getElementById('oldModelField');
-      var lastYearField = document.getElementById('lastYearField');
       var lastPumpYear = document.getElementById('lastPumpYear');
       var neverReceived = document.getElementById('neverReceived');
       var submitBtn = document.getElementById('submitBtn');
       var clearBtn = document.getElementById('clearBtn');
+      var hiddenIframe = document.getElementById('hidden_iframe');
+      var formSubmitted = false; // فلگ برای تشخیص ارسال واقعی
 
       // وقتی وضعیت پمپ تغییر می‌کنه
       pumpStatus.addEventListener('change', function() {
@@ -286,9 +287,43 @@
         });
       });
 
+      // 🎯 تشخیص موفقیت از طریق onload iframe
+      hiddenIframe.addEventListener('load', function() {
+        // اگه فرم ارسال نشده باشه، این لود اولیه‌ست — نادیده بگیر
+        if (!formSubmitted) return;
+
+        // ریست فلگ
+        formSubmitted = false;
+
+        // 🎉 نمایش پیام موفقیت
+        var successBox = document.getElementById('successMessage');
+        successBox.style.display = 'block';
+        successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+        // پاک کردن فرم
+        form.reset();
+        oldModelField.style.display = 'none';
+        neverReceived.disabled = true;
+        lastPumpYear.disabled = false;
+        Array.from(document.querySelectorAll('.error')).forEach(function(el) {
+          el.style.display = 'none'; el.textContent = '';
+        });
+
+        // برگرداندن دکمه به حالت عادی
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'ثبت درخواست';
+
+        // پاک کردن خودکار پیام بعد از ۱۵ ثانیه
+        setTimeout(function() {
+          successBox.style.display = 'none';
+        }, 15000);
+      });
+
       // Submit
       form.addEventListener('submit', function(e) {
-        e.preventDefault();
+        e.preventDefault(); // چون target=iframe داریم، همیشه
+
+        // پاک کردن ارورها
         Array.from(document.querySelectorAll('.error')).forEach(function(el) {
           el.style.display = 'none'; el.textContent = '';
         });
@@ -366,7 +401,8 @@
           return;
         }
 
-        // ارسال به Google Apps Script
+        // ✅ ارسال واقعی
+        formSubmitted = true; // فلگ برای onload
         submitBtn.disabled = true;
         submitBtn.textContent = 'در حال ارسال...';
 
@@ -376,39 +412,6 @@
 
         form.submit();
       });
-
-      // گوش دادن به پاسخ از Apps Script
-window.addEventListener('message', function(event) {
-  if (event.data && event.data.status === 'ok') {
-    // نمایش پیام موفقیت
-    var successBox = document.getElementById('successMessage');
-    successBox.style.display = 'block';
-    successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-    // پاک کردن فرم
-    form.reset();
-    oldModelField.style.display = 'none';
-    neverReceived.disabled = true;
-    lastPumpYear.disabled = false;
-    Array.from(document.querySelectorAll('.error')).forEach(function(el) {
-      el.style.display = 'none'; el.textContent = '';
-    });
-
-    // برگرداندن دکمه به حالت عادی
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'ثبت درخواست';
-
-    // پاک کردن خودکار پیام بعد از ۱۵ ثانیه (اختیاری)
-    setTimeout(function() {
-      successBox.style.display = 'none';
-    }, 15000);
-
-  } else if (event.data && event.data.status === 'error') {
-    alert('خطا در ثبت درخواست: ' + (event.data.message || 'خطای ناشناخته'));
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'ثبت درخواست';
-  }
-});
     });
   </script>
 </body>
