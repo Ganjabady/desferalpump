@@ -3,11 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>فرم ثبت‌نام درخواست پمپ دسفرال</title>
-
+  <title>فرم درخواست دریافت پمپ دسفرال - انجمن تالاسمی استان هرمزگان</title>
   <style>
     body {
-      font-family: "Segoe UI", Tahoma, Arial, "Helvetica Neue", sans-serif;
+      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
       background: #f7f9fb;
       color: #222;
       padding: 20px;
@@ -21,93 +20,68 @@
       border-radius: 8px;
       box-shadow: 0 4px 14px rgba(10,10,10,0.06);
     }
-    h1 { margin: 0 0 12px; font-size: 20px; }
-    .field {
-      margin-bottom: 14px;
-    }
-    label {
-      display:block;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
+    h1 { margin: 0 0 6px; font-size: 20px; }
+    .subtitle { font-size: 14px; color: #555; margin-bottom: 16px; }
+    .field { margin-bottom: 14px; }
+    label { display:block; font-weight: 600; margin-bottom: 6px; }
     input[type="text"], input[type="tel"], select {
-      width:100%;
-      box-sizing: border-box;
+      width:100%; box-sizing: border-box;
       padding: 10px 12px;
       border: 1px solid #ccd6df;
       border-radius: 6px;
       background: #fff;
       font-size: 14px;
     }
-    .inline-selects { display:flex; gap:8px; }
-    .inline-selects select { width:auto; min-width:90px; flex: none; }
-    .note { font-size:13px; color:#666; margin-top:6px;}
+    input:disabled, select:disabled { background: #f0f0f0; cursor: not-allowed; }
     .error { color: #d93025; font-size:13px; margin-top:6px; display:none; }
     .actions { margin-top: 18px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
     button {
-      background: #0b6cf1;
-      color: white;
-      border: none;
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
+      background: #0b6cf1; color: white; border: none;
+      padding: 10px 16px; border-radius: 8px;
+      font-weight: 600; cursor: pointer;
     }
     button:disabled { opacity: 0.6; cursor: not-allowed; }
-    .secondary {
-      background: #eef5ff; color: #0b6cf1; border: 1px solid #d6e7ff;
-    }
-    .message {
-      padding: 12px;
-      border-radius: 6px;
-      margin-bottom: 12px;
-    }
+    .secondary { background: #eef5ff; color: #0b6cf1; border: 1px solid #d6e7ff; }
+    .message { padding: 12px; border-radius: 6px; margin-bottom: 12px; }
     .message.success { background: #e6f4ea; color: #0b6f36; border: 1px solid #cde9d2; }
     .message.warn { background: #fff4e5; color: #6a4b00; border: 1px solid #ffe9b8; }
-    .table-wrap { margin-top: 20px; }
-    table {
-      width:100%;
-      border-collapse: collapse;
-      margin-top: 12px;
-      font-size: 13px;
-    }
-    th, td {
-      padding: 8px 10px;
-      border-bottom: 1px solid #eee;
-      text-align: right;
-    }
-    th { cursor:pointer; background:#fbfdff; position: sticky; top:0; }
-    .filters { display:flex; gap:8px; margin-top:10px; flex-wrap:wrap; }
-    .small { font-size:13px; padding:6px 8px; border-radius:6px; border:1px solid #ccd6df; }
-    .muted { color:#666; font-size:13px; margin-top:6px; }
+    .checkbox-row { display:flex; align-items:center; gap:8px; margin-top:6px; }
+    .checkbox-row input { width:auto; }
+    .checkbox-row label { font-weight: normal; margin: 0; }
     @media (max-width:640px){
       .actions { flex-direction:column; align-items:stretch; }
-      .inline-selects { flex-direction:column; }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>فرم ثبت‌نام درخواست پمپ دسفرال</h1>
+    <h1>فرم درخواست و امکان‌سنجی دریافت پمپ دسفرال</h1>
+    <div class="subtitle">انجمن تالاسمی استان هرمزگان</div>
 
-    <div id="info" class="message warn">
+    <div class="message warn">
       توجه: اطلاعات وارد شده باید صحیح و قابل بررسی باشد. ثبت اطلاعات به منزله تأیید نهایی و تضمین دریافت پمپ نیست و درخواست‌ها پس از بررسی و ارزیابی شرایط، پاسخ داده خواهند شد.
     </div>
 
-    <!-- form: اگر APPS_SCRIPT_URL را در فایل JS تنظیم کنید، فرم به آن ارسال خواهد شد؛ در غیر این صورت فقط در مرورگر ذخیره می‌شود -->
-    <form id="desferalForm" novalidate>
+    <form id="desferalForm" method="post" action="https://script.google.com/macros/s/AKfycbwC6vvQ92Yn9r1BqxX6i-RPmIc-RLjedKUBR6IZ_CbbIVAkf5tXhKjO7hGecQPMrw8z/exec" target="hidden_iframe" novalidate>
+
+      <!-- توکن مخفی -->
+      <input type="hidden" name="token" value="desferal-hormozgan-2026-x7k9m2p4q8w3n5v1" />
+
+      <!-- نام و نام خانوادگی -->
       <div class="field">
         <label for="fullname">نام و نام خانوادگی *</label>
         <input id="fullname" name="fullname" type="text" />
         <div id="err-fullname" class="error"></div>
       </div>
 
+      <!-- کد ملی -->
       <div class="field">
         <label for="nationalId">کد ملی (۱۰ رقم) *</label>
         <input id="nationalId" name="nationalId" type="text" inputmode="numeric" maxlength="10" placeholder="مثال: 0123456789" />
         <div id="err-nationalId" class="error"></div>
       </div>
 
+      <!-- نوع بیمه -->
       <div class="field">
         <label for="insurance">نوع بیمه *</label>
         <select id="insurance" name="insurance">
@@ -121,48 +95,14 @@
         <div id="err-insurance" class="error"></div>
       </div>
 
+      <!-- مرکز درمانی -->
       <div class="field">
         <label for="center">مرکز درمانی *</label>
         <input id="center" name="center" type="text" />
         <div id="err-center" class="error"></div>
       </div>
 
-      <!-- تاریخ آخرین دریافت پمپ دسفرال - اکنون به صورت انتخابی (سال/ماه/روز) -->
-      <div class="field">
-        <label>تاریخ آخرین دریافت پمپ دسفرال (تاریخ شمسی) *</label>
-        <div class="inline-selects">
-          <select id="lastPumpYear" name="lastPumpYear">
-            <option value="">سال</option>
-          </select>
-          <select id="lastPumpMonth" name="lastPumpMonth">
-            <option value="">ماه</option>
-          </select>
-          <select id="lastPumpDay" name="lastPumpDay">
-            <option value="">روز</option>
-          </select>
-        </div>
-        <div class="note">لطفاً سال، ماه و روز را انتخاب کنید (مثال: ۱۴۰۰ / ۶ / ۱۵)</div>
-        <div id="err-lastPumpDate" class="error"></div>
-      </div>
-
-      <div class="field">
-        <label for="city">شهرستان محل سکونت *</label>
-        <input id="city" name="city" type="text" />
-        <div id="err-city" class="error"></div>
-      </div>
-
-      <div class="field">
-        <label for="phone1">شماره تماس (۰۹xxxxxxxxx) *</label>
-        <input id="phone1" name="phone1" type="tel" inputmode="numeric" maxlength="11" placeholder="مثال: 09123456789" />
-        <div id="err-phone1" class="error"></div>
-      </div>
-
-      <div class="field">
-        <label for="phone2">شماره تماس دوم (اختیاری)</label>
-        <input id="phone2" name="phone2" type="tel" inputmode="numeric" maxlength="11" placeholder="مثال: 09123456789" />
-        <div id="err-phone2" class="error"></div>
-      </div>
-
+      <!-- وضعیت پمپ فعلی -->
       <div class="field">
         <label for="pumpStatus">وضعیت پمپ فعلی *</label>
         <select id="pumpStatus" name="pumpStatus">
@@ -174,15 +114,65 @@
         <div id="err-pumpStatus" class="error"></div>
       </div>
 
+      <!-- تاریخ آخرین دریافت پمپ (فقط سال) -->
+      <div class="field" id="lastYearField">
+        <label for="lastPumpYear">سال آخرین دریافت پمپ دسفرال (مثلاً ۱۴۰۰) *</label>
+        <input id="lastPumpYear" name="lastPumpYear" type="text" inputmode="numeric" maxlength="4" placeholder="۱۴۰۰" />
+        <div class="checkbox-row">
+          <input type="checkbox" id="neverReceived" name="neverReceived" value="yes" />
+          <label for="neverReceived">تا حالا پمپ دسفرال دریافت نکرده‌ام</label>
+        </div>
+        <div id="err-lastPumpYear" class="error"></div>
+      </div>
+
+      <!-- مدل پمپ قدیمی (نمایش شرطی) -->
       <div class="field" id="oldModelField" style="display:none;">
         <label for="oldModel">مدل پمپ قدیمی *</label>
         <input id="oldModel" name="oldModel" type="text" />
         <div id="err-oldModel" class="error"></div>
       </div>
 
+      <!-- شهرستان -->
       <div class="field">
-        <label style="font-weight:normal;">
-          <input id="confirmCheck" type="checkbox" /> <span style="margin-right:8px;">صحت اطلاعات وارد شده را تأیید می‌کنم. *</span>
+        <label for="city">شهرستان محل سکونت *</label>
+        <select id="city" name="city">
+          <option value="">انتخاب کنید</option>
+          <option>ابوموسی</option>
+          <option>بستک</option>
+          <option>بندرعباس</option>
+          <option>بندر لنگه</option>
+          <option>جاسک</option>
+          <option>حاجی‌آباد</option>
+          <option>رودان</option>
+          <option>قشم</option>
+          <option>پارسیان</option>
+          <option>میناب</option>
+          <option>خمیر</option>
+          <option>بشاگرد</option>
+          <option>سیریک</option>
+        </select>
+        <div id="err-city" class="error"></div>
+      </div>
+
+      <!-- شماره تماس -->
+      <div class="field">
+        <label for="phone1">شماره تماس (۰۹xxxxxxxxx) *</label>
+        <input id="phone1" name="phone1" type="tel" inputmode="numeric" maxlength="11" placeholder="مثال: 09123456789" />
+        <div id="err-phone1" class="error"></div>
+      </div>
+
+      <!-- شماره تماس دوم -->
+      <div class="field">
+        <label for="phone2">شماره تماس دوم (اختیاری)</label>
+        <input id="phone2" name="phone2" type="tel" inputmode="numeric" maxlength="11" placeholder="مثال: 09123456789" />
+        <div id="err-phone2" class="error"></div>
+      </div>
+
+      <!-- چک‌باکس تأیید -->
+      <div class="field">
+        <label class="checkbox-row" style="font-weight:normal;">
+          <input id="confirmCheck" type="checkbox" />
+          <span>صحت اطلاعات وارد شده را تأیید می‌کنم. *</span>
         </label>
         <div id="err-confirmCheck" class="error"></div>
       </div>
@@ -194,62 +184,17 @@
     </form>
 
     <div id="successMessage" class="message success" style="display:none; margin-top:12px;">
-      درخواست شما با موفقیت ثبت شد.
+      درخواست شما با موفقیت ثبت شد. پس از بررسی، با شما تماس گرفته خواهد شد.
     </div>
-
-    <div class="table-wrap">
-      <h2 style="font-size:16px; margin-bottom:8px;">داده‌های ثبت‌شده</h2>
-      <div class="muted">این داده‌ها در مرورگر (localStorage) نگهداری می‌شوند و می‌توانید آن‌ها را فیلتر، مرتب و به فایل اکسل صادر کنید. برای ارسال مرکزی، آدرس Web App گوگل را در README قرار دهید و مقدار APPS_SCRIPT_URL را تنظیم کنید.</div>
-
-      <div class="filters">
-        <input id="searchText" class="small" placeholder="جستجو در نام، کد ملی یا شهرستان" />
-        <select id="filterInsurance" class="small">
-          <option value="">همه بیمه‌ها</option>
-          <option>تأمین اجتماعی</option>
-          <option>خدمات درمانی</option>
-          <option>نیروهای مسلح</option>
-          <option>آزاد</option>
-          <option>سایر</option>
-        </select>
-        <select id="filterPumpStatus" class="small">
-          <option value="">همه وضعیت‌ها</option>
-          <option value="old">پمپ قدیمی دارم</option>
-          <option value="broken">پمپ خراب دارم</option>
-          <option value="none">پمپ ندارم</option>
-        </select>
-
-        <button id="exportExcel" class="small secondary">صدور اکسل</button>
-        <button id="exportCSV" class="small secondary">صدور CSV</button>
-        <button id="deleteAll" class="small" style="background:#ffeef0;border:1px solid #f8c7cc;color:#b00020">حذف همه</button>
-      </div>
-
-      <table id="dataTable" style="display:none;">
-        <thead>
-          <tr id="tableHead"></tr>
-        </thead>
-        <tbody id="tableBody"></tbody>
-      </table>
-      <div id="noData" class="muted" style="margin-top:10px;">اطلاعی ثبت نشده است.</div>
-    </div>
-
   </div>
 
-  <!-- iframe پنهان برای ارسال به Google Apps Script (در صورت تنظیم APPS_SCRIPT_URL) -->
   <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
 
-  <!-- لود کتابخانه SheetJS از CDN برای صدور اکسل -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <!-- لود jalaali-js برای تبدیل تاریخ شمسی به میلادی -->
-  <script src="https://cdn.jsdelivr.net/npm/jalaali-js@1.1.0/dist/jalaali.min.js"></script>
-
   <script>
-    // اگر می‌خواهید داده‌ها به Google Apps Script ارسال شوند، URL آن را اینجا قرار دهید (مثال: 'https://script.google.com/macros/s/XXXX/exec')
-    // در صورت خالی بودن این مقدار، فرم فقط در localStorage ذخیره می‌شود.
-    const APPS_SCRIPT_URL = '';
-
+    // اعتبارسنجی کد ملی ایران
     function validateIranianNationalCode(code) {
       if (!/^\d{10}$/.test(code)) return false;
-      if (/^(\d)\1{9}$/.test(code)) return false; // همه ارقام یکسان نباشد
+      if (/^(\d)\1{9}$/.test(code)) return false;
       var sum = 0;
       for (var i = 0; i < 9; i++) sum += parseInt(code.charAt(i), 10) * (10 - i);
       var remainder = sum % 11;
@@ -258,196 +203,28 @@
       return check === (11 - remainder);
     }
 
-    function parseJalaliDate(str) {
-      var m = str.trim().match(/^(\d{3,4})[\/\-\.](\d{1,2})[\/\-\.](\d{1,2})$/);
-      if (!m) return null;
-      var jy = parseInt(m[1], 10), jm = parseInt(m[2], 10), jd = parseInt(m[3], 10);
-      if (jm < 1 || jm > 12 || jd < 1 || jd > 31) return null;
-      try {
-        var g = jalaali.toGregorian(jy, jm, jd);
-        var d = new Date(g.gy, g.gm - 1, g.gd);
-        if (isNaN(d.getTime())) return null;
-        return { jy: jy, jm: jm, jd: jd, date: d };
-      } catch (e) {
-        return null;
-      }
-    }
-
-    function atLeastThreeYearsPassed(jalaliString) {
-      var parsed = parseJalaliDate(jalaliString);
-      if (!parsed) return { ok: false, reason: 'invalid' };
-      var lastDate = parsed.date;
-      var now = new Date();
-      var threeYearsAgo = new Date(now.getFullYear() - 3, now.getMonth(), now.getDate());
-      return { ok: lastDate <= threeYearsAgo, lastDate: lastDate, threeYearsAgo: threeYearsAgo };
-    }
-
-    // اگر از selects استفاده شده، تاریخ را می‌سازیم
-    function buildJalaliFromSelects() {
-      var y = document.getElementById('lastPumpYear').value;
-      var m = document.getElementById('lastPumpMonth').value;
-      var d = document.getElementById('lastPumpDay').value;
-      if (!y || !m || !d) return null;
-      // بازگشت به فرمت YYYY/MM/DD
-      var mm = m.toString().padStart(2, '0');
-      var dd = d.toString().padStart(2, '0');
-      return y + '/' + mm + '/' + dd;
-    }
-
-    const STORAGE_KEY = 'desferalApplications_v1';
-
-    function loadData() {
-      try {
-        var raw = localStorage.getItem(STORAGE_KEY);
-        return raw ? JSON.parse(raw) : [];
-      } catch (e) {
-        console.error(e);
-        return [];
-      }
-    }
-    function saveData(arr) { localStorage.setItem(STORAGE_KEY, JSON.stringify(arr)); }
-
     function showError(id, msg) {
-      const el = document.getElementById('err-' + id);
+      var el = document.getElementById('err-' + id);
       if (!el) return;
       if (msg) { el.style.display = 'block'; el.textContent = msg; }
       else { el.style.display = 'none'; el.textContent = ''; }
     }
 
-    let currentSort = { key: null, dir: 1 };
-    const tableColumns = [
-      { key: 'fullname', label: 'نام و نام خانوادگی' },
-      { key: 'nationalId', label: 'کد ملی' },
-      { key: 'insurance', label: 'نوع بیمه' },
-      { key: 'center', label: 'مرکز درمانی' },
-      { key: 'lastPumpDate', label: 'تاریخ آخرین دریافت پمپ' },
-      { key: 'city', label: 'شهرستان' },
-      { key: 'phone1', label: 'شماره تماس' },
-      { key: 'phone2', label: 'شماره تماس دوم' },
-      { key: 'pumpStatusLabel', label: 'وضعیت پمپ' },
-      { key: 'oldModel', label: 'مدل پمپ قدیمی' },
-      { key: 'createdAt', label: 'تاریخ ثبت' }
-    ];
-
-    function renderTable() {
-      const data = loadData();
-      const filterText = document.getElementById('searchText').value.trim().toLowerCase();
-      const filterInsurance = document.getElementById('filterInsurance').value;
-      const filterPumpStatus = document.getElementById('filterPumpStatus').value;
-
-      let filtered = data.filter(row => {
-        if (filterInsurance && row.insurance !== filterInsurance) return false;
-        if (filterPumpStatus && row.pumpStatus !== filterPumpStatus) return false;
-        if (filterText) {
-          const hay = (row.fullname + ' ' + row.nationalId + ' ' + row.city).toLowerCase();
-          return hay.indexOf(filterText) !== -1;
-        }
-        return true;
-      });
-
-      if (currentSort.key) {
-        filtered.sort((a,b) => {
-          let A = a[currentSort.key] || '';
-          let B = b[currentSort.key] || '';
-          if (currentSort.key === 'createdAt') { A = new Date(A); B = new Date(B); }
-          if (A < B) return -currentSort.dir;
-          if (A > B) return currentSort.dir;
-          return 0;
-        });
-      }
-
-      const table = document.getElementById('dataTable');
-      const tbody = document.getElementById('tableBody');
-      const theadRow = document.getElementById('tableHead');
-      tbody.innerHTML = '';
-      theadRow.innerHTML = '';
-
-      tableColumns.forEach(col => {
-        const th = document.createElement('th');
-        th.textContent = col.label;
-        th.dataset.key = col.key;
-        th.addEventListener('click', () => {
-          if (currentSort.key === col.key) currentSort.dir = -currentSort.dir;
-          else { currentSort.key = col.key; currentSort.dir = -1; }
-          renderTable();
-        });
-        theadRow.appendChild(th);
-      });
-
-      if (filtered.length === 0) {
-        table.style.display = 'none';
-        document.getElementById('noData').style.display = 'block';
-        return;
-      } else {
-        table.style.display = 'table';
-        document.getElementById('noData').style.display = 'none';
-      }
-
-      filtered.forEach(row => {
-        const tr = document.createElement('tr');
-        tableColumns.forEach(col => {
-          const td = document.createElement('td');
-          td.textContent = row[col.key] || '';
-          tr.appendChild(td);
-        });
-        tbody.appendChild(tr);
-      });
-    }
-
-    function exportToExcel() {
-      const data = loadData();
-      if (data.length === 0) { alert('هیچ داده‌ای برای صدور وجود ندارد.'); return; }
-      const header = tableColumns.map(c => c.label);
-      const rows = data.map(r => tableColumns.map(c => r[c.key] || ''));
-      const wb = XLSX.utils.book_new();
-      const ws = XLSX.utils.aoa_to_sheet([header, ...rows]);
-      XLSX.utils.book_append_sheet(wb, ws, 'Applications');
-      XLSX.writeFile(wb, 'desferal_applications.xlsx');
-    }
-    function exportToCSV() {
-      const data = loadData();
-      if (data.length === 0) { alert('هیچ داده‌ای برای صدور وجود ندارد.'); return; }
-      const header = tableColumns.map(c => c.label).join(',');
-      const rows = data.map(r => tableColumns.map(c => '"' + ((r[c.key] || '').toString().replace(/"/g,'""')) + '"').join(','));
-      const csv = [header, ...rows].join('\r\n');
-      const blob = new Blob([csv], { type: 'text/csv;charset=UTF-8' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url; a.download = 'desferal_applications.csv';
-      document.body.appendChild(a); a.click(); a.remove();
-      URL.revokeObjectURL(url);
-    }
-
-    function deleteAllData() {
-      if (!confirm('آیا از حذف همه داده‌ها اطمینان دارید؟ این عمل قابل بازگشت نیست.')) return;
-      localStorage.removeItem(STORAGE_KEY);
-      renderTable();
-    }
-
     document.addEventListener('DOMContentLoaded', function() {
-      const form = document.getElementById('desferalForm');
-      const pumpStatus = document.getElementById('pumpStatus');
-      const oldModelField = document.getElementById('oldModelField');
-      const submitBtn = document.getElementById('submitBtn');
+      var form = document.getElementById('desferalForm');
+      var pumpStatus = document.getElementById('pumpStatus');
+      var oldModelField = document.getElementById('oldModelField');
+      var lastYearField = document.getElementById('lastYearField');
+      var lastPumpYear = document.getElementById('lastPumpYear');
+      var neverReceived = document.getElementById('neverReceived');
+      var submitBtn = document.getElementById('submitBtn');
+      var clearBtn = document.getElementById('clearBtn');
 
-      // populate year select (1390..1405)
-      const yearSelect = document.getElementById('lastPumpYear');
-      for (let y = 1405; y >= 1390; y--) {
-        const opt = document.createElement('option'); opt.value = y; opt.textContent = y.toString(); yearSelect.appendChild(opt);
-      }
-      // populate months 1..12
-      const monthSelect = document.getElementById('lastPumpMonth');
-      for (let m = 1; m <= 12; m++) {
-        const opt = document.createElement('option'); opt.value = m; opt.textContent = m.toString(); monthSelect.appendChild(opt);
-      }
-      // populate days 1..31
-      const daySelect = document.getElementById('lastPumpDay');
-      for (let d = 1; d <= 31; d++) {
-        const opt = document.createElement('option'); opt.value = d; opt.textContent = d.toString(); daySelect.appendChild(opt);
-      }
+      // وقتی وضعیت پمپ تغییر می‌کنه
+      pumpStatus.addEventListener('change', function() {
+        var v = pumpStatus.value;
 
-      pumpStatus.addEventListener('change', () => {
-        const v = pumpStatus.value;
+        // مدل پمپ قدیمی
         if (v === 'old' || v === 'broken') {
           oldModelField.style.display = 'block';
         } else {
@@ -455,52 +232,64 @@
           document.getElementById('oldModel').value = '';
           showError('oldModel', '');
         }
+
+        // چک‌باکس «تا حالا نگرفتم» فقط وقتی «پمپ ندارم» انتخاب شده فعال میشه
+        if (v === 'none') {
+          neverReceived.disabled = false;
+        } else {
+          neverReceived.checked = false;
+          neverReceived.disabled = true;
+        }
+
+        updateYearFieldState();
       });
 
-      document.getElementById('clearBtn').addEventListener('click', () => {
+      // وقتی چک‌باکس «تا حالا نگرفتم» تغییر کرد
+      neverReceived.addEventListener('change', updateYearFieldState);
+
+      function updateYearFieldState() {
+        if (neverReceived.checked) {
+          lastPumpYear.disabled = true;
+          lastPumpYear.value = '';
+          showError('lastPumpYear', '');
+        } else {
+          lastPumpYear.disabled = false;
+        }
+      }
+
+      // پاک کردن فرم
+      clearBtn.addEventListener('click', function() {
         form.reset();
         document.getElementById('successMessage').style.display = 'none';
-        Array.from(document.querySelectorAll('.error')).forEach(e => { e.style.display='none'; e.textContent=''; });
+        oldModelField.style.display = 'none';
+        neverReceived.disabled = true;
+        updateYearFieldState();
+        Array.from(document.querySelectorAll('.error')).forEach(function(e) {
+          e.style.display = 'none'; e.textContent = '';
+        });
       });
 
-      // listener برای پیام از iframe (Apps Script)
-      window.addEventListener('message', function(event) {
-        if (!event.data) return;
-        if (event.data.status === 'ok') {
-          document.getElementById('successMessage').style.display = 'block';
-          form.reset();
-          oldModelField.style.display = 'none';
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'ثبت درخواست';
-          setTimeout(()=> document.getElementById('successMessage').style.display='none', 4000);
-          renderTable();
-        } else if (event.data.status === 'error') {
-          alert('خطا در ذخیره‌سازی: ' + (event.data.message || 'خطای ناشناخته'));
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'ثبت درخواست';
-        }
-      });
-
-      form.addEventListener('submit', (e) => {
+      // Submit
+      form.addEventListener('submit', function(e) {
         e.preventDefault();
-        Array.from(document.querySelectorAll('.error')).forEach(el => { el.style.display = 'none'; el.textContent = ''; });
+        Array.from(document.querySelectorAll('.error')).forEach(function(el) {
+          el.style.display = 'none'; el.textContent = '';
+        });
 
-        const fullname = document.getElementById('fullname').value.trim();
-        const nationalId = document.getElementById('nationalId').value.trim();
-        const insurance = document.getElementById('insurance').value;
-        const center = document.getElementById('center').value.trim();
-        // build lastPumpDate from selects
-        const lastPumpDateBuilt = buildJalaliFromSelects();
-        const lastPumpDate = lastPumpDateBuilt || document.getElementById('lastPumpDate')?.value?.trim() || '';
-        const city = document.getElementById('city').value.trim();
-        const phone1 = document.getElementById('phone1').value.trim();
-        const phone2 = document.getElementById('phone2').value.trim();
-        const pumpStatusVal = document.getElementById('pumpStatus').value;
-        const pumpStatusLabel = document.getElementById('pumpStatus').selectedOptions[0].text;
-        const oldModel = document.getElementById('oldModel').value.trim();
-        const confirmed = document.getElementById('confirmCheck').checked;
+        var fullname = document.getElementById('fullname').value.trim();
+        var nationalId = document.getElementById('nationalId').value.trim();
+        var insurance = document.getElementById('insurance').value;
+        var center = document.getElementById('center').value.trim();
+        var pumpStatusVal = pumpStatus.value;
+        var year = lastPumpYear.value.trim();
+        var isNever = neverReceived.checked;
+        var oldModel = document.getElementById('oldModel').value.trim();
+        var city = document.getElementById('city').value;
+        var phone1 = document.getElementById('phone1').value.trim();
+        var phone2 = document.getElementById('phone2').value.trim();
+        var confirmed = document.getElementById('confirmCheck').checked;
 
-        let hasError = false;
+        var hasError = false;
 
         if (!fullname) { showError('fullname', 'وارد کردن نام و نام خانوادگی الزامی است.'); hasError = true; }
         if (!/^\d{10}$/.test(nationalId) || !validateIranianNationalCode(nationalId)) {
@@ -508,88 +297,89 @@
         }
         if (!insurance) { showError('insurance', 'نوع بیمه را انتخاب کنید.'); hasError = true; }
         if (!center) { showError('center', 'مرکز درمانی را وارد کنید.'); hasError = true; }
+        if (!pumpStatusVal) { showError('pumpStatus', 'وضعیت پمپ را انتخاب کنید.'); hasError = true; }
+        if (!city) { showError('city', 'شهرستان محل سکونت را انتخاب کنید.'); hasError = true; }
 
-        if (!lastPumpDate) {
-          showError('lastPumpDate', 'تاریخ آخرین دریافت پمپ را کامل انتخاب کنید.'); hasError = true;
-        } else {
-          const lastDateParsed = parseJalaliDate(lastPumpDate);
-          if (!lastDateParsed) {
-            showError('lastPumpDate', 'تاریخ شمسی نامعتبر است.'); hasError = true;
+        // اعتبارسنجی سال و شرط ۳ سال
+        if (!isNever) {
+          if (!/^\d{4}$/.test(year)) {
+            showError('lastPumpYear', 'سال را به صورت ۴ رقمی وارد کنید (مثلاً ۱۴۰۰).'); hasError = true;
           } else {
-            const res = atLeastThreeYearsPassed(lastPumpDate);
-            if (!res.ok) {
-              showError('lastPumpDate', 'از تاریخ آخرین دریافت پمپ شما کمتر از ۳ سال گذشته است. در حال حاضر واجد شرایط ثبت‌نام نیستید.'); hasError = true;
+            var y = parseInt(year, 10);
+            var currentYear = 1404; // سال جاری شمسی — در صورت نیاز به‌روزرسانی کن
+            var diff = currentYear - y;
+
+            if (diff < 0) {
+              showError('lastPumpYear', 'سال وارد شده معتبر نیست.'); hasError = true;
+            } else if (diff < 3) {
+              if (pumpStatusVal === 'broken') {
+                // پمپ خراب → مجاز
+              } else {
+                showError('lastPumpYear', 'از تاریخ آخرین دریافت پمپ شما کمتر از ۳ سال گذشته است. در حال حاضر واجد شرایط ثبت‌نام نیستید.');
+                hasError = true;
+              }
             }
           }
-        }
-
-        if (!city) { showError('city', 'شهرستان محل سکونت را وارد کنید.'); hasError = true; }
-        if (!/^\d{11}$/.test(phone1) || !phone1.startsWith('09')) {
-          showError('phone1', 'شماره تماس معتبر وارد کنید (۱۱ رقم با پیش‌شماره ۰۹).'); hasError = true;
-        }
-        if (phone2) {
-          if (!/^\d{11}$/.test(phone2) || !phone2.startsWith('09')) {
-            showError('phone2', 'شماره تماس دوم نامعتبر است. اگر وارد می‌کنید باید ۱۱ رقم با پیش‌شماره ۰۹ باشد.'); hasError = true;
+        } else {
+          if (pumpStatusVal !== 'none') {
+            showError('pumpStatus', 'اگر تا حالا پمپ نگرفته‌اید، وضعیت پمپ باید «پمپ ندارم» باشد.');
+            hasError = true;
           }
         }
-        if (!pumpStatusVal) { showError('pumpStatus', 'وضعیت پمپ را انتخاب کنید.'); hasError = true; }
+
+        // مدل پمپ قدیمی
         if ((pumpStatusVal === 'old' || pumpStatusVal === 'broken')) {
           if (!oldModel) { showError('oldModel', 'مدل پمپ قدیمی را وارد کنید.'); hasError = true; }
         }
+
+        // شماره تماس
+        if (!/^09\d{9}$/.test(phone1)) {
+          showError('phone1', 'شماره تماس معتبر وارد کنید (۱۱ رقم با پیش‌شماره ۰۹).'); hasError = true;
+        }
+        if (phone2 && !/^09\d{9}$/.test(phone2)) {
+          showError('phone2', 'شماره تماس دوم نامعتبر است.'); hasError = true;
+        }
+
+        // تأییدیه
         if (!confirmed) { showError('confirmCheck', 'برای ادامه باید صحت اطلاعات را تأیید کنید.'); hasError = true; }
 
         if (hasError) {
-          const firstError = document.querySelector('.error[style*="block"]');
+          var firstError = document.querySelector('.error[style*="block"]');
           if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
           return;
         }
 
-        const record = {
-          fullname, nationalId, insurance, center,
-          lastPumpDate, city, phone1, phone2,
-          pumpStatus: pumpStatusVal, pumpStatusLabel, oldModel, createdAt: new Date().toISOString()
-        };
+        // ارسال به Google Apps Script
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'در حال ارسال...';
 
-        // ذخیره محلی به عنوان بکاپ
-        const arr = loadData();
-        arr.push(record);
-        saveData(arr);
+        if (isNever) {
+          lastPumpYear.value = '';
+        }
 
-        // اگر APPS_SCRIPT_URL تنظیم شده باشد، فرم را به آن ارسال می‌کنیم
-        if (APPS_SCRIPT_URL && APPS_SCRIPT_URL.trim() !== '') {
-          // اضافه کردن hidden inputs (در صورت نبودن) تا داده‌های select ارسال شوند
-          // قبل از submit، مطمئن می‌شویم که فیلدهای lastPumpDate وجود دارند
-          // ما از selects داریم، اما برای ارسال فرم آنها را به صورت فیلدهای نام‌دار می‌فرستیم
-          // حذف هر hidden قبلی
-          ['lastPumpDate'].forEach(n => { const ex = document.querySelector('input[name="'+n+'"]'); if (ex) ex.remove(); });
-          const hidden = document.createElement('input'); hidden.type = 'hidden'; hidden.name = 'lastPumpDate'; hidden.value = lastPumpDate; form.appendChild(hidden);
+        form.submit();
+      });
 
-          form.method = 'post';
-          form.action = APPS_SCRIPT_URL;
-          form.target = 'hidden_iframe';
-          submitBtn.disabled = true;
-          submitBtn.textContent = 'در حال ارسال ...';
-          form.submit();
-        } else {
-          // فقط ذخیره محلی و نمایش پیام موفق
+      // گوش دادن به پاسخ از Apps Script
+      window.addEventListener('message', function(event) {
+        if (event.data && event.data.status === 'ok') {
           document.getElementById('successMessage').style.display = 'block';
           form.reset();
           oldModelField.style.display = 'none';
-          setTimeout(() => { document.getElementById('successMessage').style.display = 'none'; }, 4000);
-          renderTable();
+          neverReceived.disabled = true;
+          lastPumpYear.disabled = false;
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'ثبت درخواست';
+          setTimeout(function() {
+            document.getElementById('successMessage').style.display = 'none';
+          }, 5000);
+        } else if (event.data && event.data.status === 'error') {
+          alert('خطا در ثبت درخواست: ' + (event.data.message || 'خطای ناشناخته'));
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'ثبت درخواست';
         }
       });
-
-      document.getElementById('searchText').addEventListener('input', renderTable);
-      document.getElementById('filterInsurance').addEventListener('change', renderTable);
-      document.getElementById('filterPumpStatus').addEventListener('change', renderTable);
-      document.getElementById('exportExcel').addEventListener('click', exportToExcel);
-      document.getElementById('exportCSV').addEventListener('click', exportToCSV);
-      document.getElementById('deleteAll').addEventListener('click', deleteAllData);
-
-      renderTable();
     });
-
   </script>
 </body>
 </html>
