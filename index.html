@@ -1,418 +1,1080 @@
-<!doctype html>
-<html lang="fa" dir="rtl"> 
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>فرم درخواست دریافت پمپ دسفرال - انجمن تالاسمی استان هرمزگان</title>
-  <style>
-    body {
-      font-family: "Segoe UI", Tahoma, Arial, sans-serif;
-      background: #f7f9fb;
-      color: #222;
-      padding: 20px;
-      direction: rtl;
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      background: #fff;
-      padding: 20px 24px;
-      border-radius: 8px;
-      box-shadow: 0 4px 14px rgba(10,10,10,0.06);
-    }
-    h1 { margin: 0 0 6px; font-size: 20px; }
-    .subtitle { font-size: 14px; color: #555; margin-bottom: 16px; }
-    .field { margin-bottom: 14px; }
-    label { display:block; font-weight: 600; margin-bottom: 6px; }
-    input[type="text"], input[type="tel"], select {
-      width:100%; box-sizing: border-box;
-      padding: 10px 12px;
-      border: 1px solid #ccd6df;
-      border-radius: 6px;
-      background: #fff;
-      font-size: 14px;
-    }
-    input:disabled, select:disabled { background: #f0f0f0; cursor: not-allowed; }
-    .error { color: #d93025; font-size:13px; margin-top:6px; display:none; }
-    .actions { margin-top: 18px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
-    button {
-      background: #0b6cf1; color: white; border: none;
-      padding: 10px 16px; border-radius: 8px;
-      font-weight: 600; cursor: pointer;
-    }
-    button:disabled { opacity: 0.6; cursor: not-allowed; }
-    .secondary { background: #eef5ff; color: #0b6cf1; border: 1px solid #d6e7ff; }
-    .message { padding: 12px; border-radius: 6px; margin-bottom: 12px; }
-    .message.success { background: #e6f4ea; color: #0b6f36; border: 1px solid #cde9d2; }
-    .message.warn { background: #fff4e5; color: #6a4b00; border: 1px solid #ffe9b8; }
-    .checkbox-row { display:flex; align-items:center; gap:8px; margin-top:6px; }
-    .checkbox-row input { width:auto; }
-    .checkbox-row label { font-weight: normal; margin: 0; }
-    @media (max-width:640px){
-      .actions { flex-direction:column; align-items:stretch; }
-    }
-    .message.success {
-      animation: fadeInUp 0.5s ease;
-    }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دستیار درخواست پمپ | انجمن تالاسمی استان هرمزگان</title>
+<link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; }
+  
+  :root {
+    --primary: #6366f1;
+    --primary-light: #818cf8;
+    --accent: #ec4899;
+    --success: #10b981;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --bg-dark: #0a0a1a;
+    --bg-card: rgba(255, 255, 255, 0.06);
+    --bg-chat: rgba(15, 15, 30, 0.7);
+    --text: #fffffe;
+    --text-dim: #a7a9be;
+    --border: rgba(255, 255, 255, 0.1);
+    --user-bubble: linear-gradient(135deg, #6366f1, #8b5cf6);
+    --bot-bubble: rgba(255, 255, 255, 0.08);
+  }
+  
+  body {
+    min-height: 100vh;
+    background: var(--bg-dark);
+    color: var(--text);
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .bg-gradient {
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 20% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.08) 0%, transparent 60%);
+    z-index: 0;
+  }
+  
+  .grid-bg {
+    position: fixed;
+    inset: 0;
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 50px 50px;
+    z-index: 0;
+  }
+  
+  .chat-container {
+    position: relative;
+    z-index: 1;
+    max-width: 500px;
+    margin: 0 auto;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-chat);
+    backdrop-filter: blur(30px);
+    -webkit-backdrop-filter: blur(30px);
+    border-left: 1px solid var(--border);
+    border-right: 1px solid var(--border);
+  }
+  
+  .chat-header {
+    padding: 16px 20px;
+    background: rgba(10, 10, 26, 0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .bot-avatar {
+    width: 46px; height: 46px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+    flex-shrink: 0;
+  }
+  .bot-avatar::after {
+    content: '';
+    position: absolute;
+    bottom: 2px; left: 2px;
+    width: 11px; height: 11px;
+    background: var(--success);
+    border-radius: 50%;
+    border: 2px solid var(--bg-dark);
+    box-shadow: 0 0 8px var(--success);
+  }
+  .bot-info { flex: 1; min-width: 0; }
+  .bot-info h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .bot-info p {
+    font-size: 11px;
+    color: var(--success);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .icon-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+  .icon-btn:hover { background: rgba(255,255,255,0.1); }
+  
+  .chat-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 18px;
+    padding-bottom: 60px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    scroll-behavior: smooth;
+  }
+  .chat-area::-webkit-scrollbar { width: 4px; }
+  .chat-area::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+  }
+  
+  .message {
+    display: flex;
+    gap: 8px;
+    max-width: 88%;
+    animation: messageIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  @keyframes messageIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .message.user {
+    align-self: flex-start;
+    flex-direction: row;
+  }
+  .message.bot {
+    align-self: flex-end;
+    flex-direction: row-reverse;
+  }
+  .msg-avatar {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    margin-top: 2px;
+  }
+  .message.user .msg-avatar {
+    background: linear-gradient(135deg, #f59e0b, #ef4444);
+  }
+  .message.bot .msg-avatar {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+  }
+  .msg-content { display: flex; flex-direction: column; min-width: 0; }
+  .msg-bubble {
+    padding: 11px 15px;
+    border-radius: 18px;
+    font-size: 13.5px;
+    line-height: 1.75;
+    word-wrap: break-word;
+  }
+  .message.user .msg-bubble {
+    background: var(--user-bubble);
+    color: white;
+    border-top-right-radius: 4px;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+  }
+  .message.bot .msg-bubble {
+    background: var(--bot-bubble);
+    border: 1px solid var(--border);
+    border-top-left-radius: 4px;
+  }
+  .msg-bubble.error {
+    background: rgba(239, 68, 68, 0.12);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: #fca5a5;
+  }
+  .msg-time {
+    font-size: 10px;
+    color: var(--text-dim);
+    margin-top: 3px;
+    padding: 0 6px;
+  }
+  .message.user .msg-time { text-align: right; }
+  .message.bot .msg-time { text-align: left; }
+  
+  .typing {
+    display: flex;
+    gap: 4px;
+    padding: 13px 17px;
+    background: var(--bot-bubble);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    border-top-left-radius: 4px;
+    width: fit-content;
+    align-self: flex-end;
+  }
+  .typing span {
+    width: 6px; height: 6px;
+    background: var(--text-dim);
+    border-radius: 50%;
+    animation: typing 1.4s infinite;
+  }
+  .typing span:nth-child(2) { animation-delay: 0.2s; }
+  .typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+    30% { transform: translateY(-5px); opacity: 1; }
+  }
+  
+  .quick-replies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-top: 6px;
+    animation: messageIn 0.4s;
+  }
+  .quick-reply {
+    padding: 8px 14px;
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 18px;
+    color: var(--text);
+    font-size: 12.5px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: inherit;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .quick-reply:hover {
+    background: rgba(99, 102, 241, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+  }
+  .quick-reply.primary {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-color: transparent;
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+  }
+  
+  .input-area {
+    padding: 14px;
+    background: rgba(10, 10, 26, 0.85);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+  }
+  .input-wrap {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 5px 5px 5px 14px;
+    transition: all 0.3s;
+  }
+  .input-wrap:focus-within {
+    border-color: var(--primary-light);
+    background: rgba(255,255,255,0.08);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  }
+  .text-input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--text);
+    font-size: 14px;
+    font-family: inherit;
+    padding: 9px 0;
+  }
+  .text-input::placeholder { color: var(--text-dim); }
+  .text-input.ltr { direction: ltr; text-align: left; }
+  .send-btn {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border: none;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    font-size: 15px;
+    flex-shrink: 0;
+  }
+  .send-btn:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+  }
+  .send-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  
+  .summary-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px;
+    margin-top: 6px;
+  }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 4px;
+    border-bottom: 1px dashed rgba(255,255,255,0.08);
+    font-size: 12.5px;
+    gap: 10px;
+  }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-row .label { color: var(--text-dim); flex-shrink: 0; }
+  .summary-row .value { font-weight: 500; text-align: left; word-break: break-word; }
+  
+  .success-screen {
+    text-align: center;
+    padding: 25px 15px;
+    animation: messageIn 0.5s;
+  }
+  .success-icon {
+    width: 75px; height: 75px;
+    margin: 0 auto 18px;
+    background: linear-gradient(135deg, var(--success), #059669);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 38px;
+    animation: pop 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 40px rgba(16, 185, 129, 0.4);
+  }
+  @keyframes pop {
+    0% { transform: scale(0); }
+    60% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+  .success-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+    background: linear-gradient(135deg, #fff, #a7a9be);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .success-desc {
+    color: var(--text-dim);
+    font-size: 12.5px;
+    line-height: 1.8;
+    margin-bottom: 18px;
+  }
+  
+  .date-sep {
+    text-align: center;
+    font-size: 10px;
+    color: var(--text-dim);
+    padding: 6px 0;
+    position: relative;
+  }
+  .date-sep::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0; right: 0;
+    height: 1px;
+    background: var(--border);
+    z-index: -1;
+  }
+  .date-sep span {
+    background: var(--bg-chat);
+    padding: 2px 10px;
+  }
+  
+  .notice-box {
+    background: rgba(245, 158, 11, 0.08);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-size: 11.5px;
+    line-height: 1.7;
+    color: #fcd34d;
+    margin-top: 6px;
+  }
+  
+  .sending-indicator {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: rgba(99, 102, 241, 0.1);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    border-radius: 14px;
+    font-size: 12px;
+    color: var(--primary-light);
+    margin-top: 6px;
+  }
+  .spinner {
+    width: 14px; height: 14px;
+    border: 2px solid rgba(99, 102, 241, 0.3);
+    border-top-color: var(--primary-light);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  
+  /* Developer Footer */
+  .dev-footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 8px 16px;
+    background: rgba(10, 10, 26, 0.6);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 10px;
+    color: var(--text-dim);
+    z-index: 10;
+  }
+  .dev-footer a {
+    color: var(--primary-light);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .dev-footer a:hover {
+    color: var(--accent);
+  }
+  .dev-footer .separator {
+    opacity: 0.3;
+  }
+  
+  @media (max-width: 500px) {
+    .chat-container { max-width: 100%; }
+    .message { max-width: 92%; }
+    .bot-info h3 { font-size: 13px; }
+  }
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>فرم درخواست و امکان‌سنجی دریافت پمپ دسفرال</h1>
-    <div class="subtitle">انجمن تالاسمی استان هرمزگان</div>
 
-    <div class="message warn">
-      توجه: اطلاعات وارد شده باید صحیح و قابل بررسی باشد. ثبت اطلاعات به منزله تأیید نهایی و تضمین دریافت پمپ نیست و درخواست‌ها پس از بررسی و ارزیابی شرایط، پاسخ داده خواهند شد.
+<div class="bg-gradient"></div>
+<div class="grid-bg"></div>
+
+<div class="chat-container">
+  <div class="chat-header">
+    <div class="bot-avatar">💉</div>
+    <div class="bot-info">
+      <h3>دستیار درخواست پمپ دسفرال</h3>
+      <p>● انجمن تالاسمی استان هرمزگان</p>
     </div>
-
-    <form id="desferalForm" method="post" action="https://script.google.com/macros/s/AKfycbwC6vvQ92Yn9r1BqxX6i-RPmIc-RLjedKUBR6IZ_CbbIVAkf5tXhKjO7hGecQPMrw8z/exec" target="hidden_iframe" novalidate>
-
-      <!-- توکن مخفی -->
-      <input type="hidden" name="token" value="desferal-hormozgan-2026-x7k9m2p4q8w3n5v1" />
-
-      <!-- نام و نام خانوادگی -->
-      <div class="field">
-        <label for="fullname">نام و نام خانوادگی *</label>
-        <input id="fullname" name="fullname" type="text" />
-        <div id="err-fullname" class="error"></div>
-      </div>
-
-      <!-- کد ملی -->
-      <div class="field">
-        <label for="nationalId">کد ملی (۱۰ رقم) *</label>
-        <input id="nationalId" name="nationalId" type="text" inputmode="numeric" maxlength="10" placeholder="مثال: 0123456789" />
-        <div id="err-nationalId" class="error"></div>
-      </div>
-
-      <!-- نوع بیمه -->
-      <div class="field">
-        <label for="insurance">نوع بیمه *</label>
-        <select id="insurance" name="insurance">
-          <option value="">انتخاب کنید</option>
-          <option>تأمین اجتماعی</option>
-          <option>خدمات درمانی</option>
-          <option>نیروهای مسلح</option>
-          <option>آزاد</option>
-          <option>سایر</option>
-        </select>
-        <div id="err-insurance" class="error"></div>
-      </div>
-
-      <!-- مرکز درمانی -->
-      <div class="field">
-        <label for="center">مرکز درمانی *</label>
-        <input id="center" name="center" type="text" />
-        <div id="err-center" class="error"></div>
-      </div>
-
-      <!-- وضعیت پمپ فعلی -->
-      <div class="field">
-        <label for="pumpStatus">وضعیت پمپ فعلی *</label>
-        <select id="pumpStatus" name="pumpStatus">
-          <option value="">انتخاب کنید</option>
-          <option value="old">پمپ قدیمی دارم</option>
-          <option value="broken">پمپ خراب دارم</option>
-          <option value="none">پمپ ندارم</option>
-        </select>
-        <div id="err-pumpStatus" class="error"></div>
-      </div>
-
-      <!-- تاریخ آخرین دریافت پمپ (فقط سال) -->
-      <div class="field" id="lastYearField">
-        <label for="lastPumpYear">سال آخرین دریافت پمپ دسفرال (مثلاً ۱۴۰۰) *</label>
-        <input id="lastPumpYear" name="lastPumpYear" type="text" inputmode="numeric" maxlength="4" placeholder="۱۴۰۰" />
-        <div class="checkbox-row">
-          <input type="checkbox" id="neverReceived" name="neverReceived" value="yes" />
-          <label for="neverReceived">تا حالا پمپ دسفرال دریافت نکرده‌ام</label>
-        </div>
-        <div id="err-lastPumpYear" class="error"></div>
-      </div>
-
-      <!-- مدل پمپ قدیمی (نمایش شرطی) -->
-      <div class="field" id="oldModelField" style="display:none;">
-        <label for="oldModel">مدل پمپ قدیمی *</label>
-        <input id="oldModel" name="oldModel" type="text" />
-        <div id="err-oldModel" class="error"></div>
-      </div>
-
-      <!-- شهرستان -->
-      <div class="field">
-        <label for="city">شهرستان محل سکونت *</label>
-        <select id="city" name="city">
-          <option value="">انتخاب کنید</option>
-          <option>ابوموسی</option>
-          <option>بستک</option>
-          <option>بندرعباس</option>
-          <option>بندر لنگه</option>
-          <option>جاسک</option>
-          <option>حاجی‌آباد</option>
-          <option>رودان</option>
-          <option>قشم</option>
-          <option>پارسیان</option>
-          <option>میناب</option>
-          <option>خمیر</option>
-          <option>بشاگرد</option>
-          <option>سیریک</option>
-        </select>
-        <div id="err-city" class="error"></div>
-      </div>
-
-      <!-- شماره تماس -->
-      <div class="field">
-        <label for="phone1">شماره تماس (۰۹xxxxxxxxx) *</label>
-        <input id="phone1" name="phone1" type="tel" inputmode="numeric" maxlength="11" placeholder="مثال: 09123456789" />
-        <div id="err-phone1" class="error"></div>
-      </div>
-
-      <!-- شماره تماس دوم -->
-      <div class="field">
-        <label for="phone2">شماره تماس دوم (اختیاری)</label>
-        <input id="phone2" name="phone2" type="tel" inputmode="numeric" maxlength="11" placeholder="مثال: 09123456789" />
-        <div id="err-phone2" class="error"></div>
-      </div>
-
-      <!-- چک‌باکس تأیید -->
-      <div class="field">
-        <label class="checkbox-row" style="font-weight:normal;">
-          <input id="confirmCheck" type="checkbox" />
-          <span>صحت اطلاعات وارد شده را تأیید می‌کنم. *</span>
-        </label>
-        <div id="err-confirmCheck" class="error"></div>
-      </div>
-
-      <div class="actions">
-        <button type="submit" id="submitBtn">ثبت درخواست</button>
-        <button type="button" id="clearBtn" class="secondary">پاک کردن فرم</button>
-      </div>
-    </form>
-
-    <div id="successMessage" class="message success" style="display:none; margin-top:16px; text-align:center; padding:20px;">
-      <div style="font-size:48px; margin-bottom:10px;">✅</div>
-      <div style="font-size:18px; font-weight:bold; margin-bottom:8px;">درخواست شما با موفقیت ثبت شد</div>
-      <div style="font-size:14px; line-height:1.8;">
-        اطلاعات شما در سامانه ثبت گردید. پس از بررسی و ارزیابی شرایط، با شما تماس گرفته خواهد شد.
-        <br>
-        از صبر و همراهی شما سپاسگزاریم. 🌹
-      </div>
-      <button type="button" onclick="document.getElementById('successMessage').style.display='none';" 
-              style="margin-top:14px; background:#0b6f36; color:#fff; border:none; padding:8px 20px; border-radius:6px; cursor:pointer; font-weight:600;">
-        متوجه شدم
-      </button>
+    <button class="icon-btn" onclick="if(confirm('آیا مطمئن هستید؟ اطلاعات فعلی پاک می‌شود.')) location.reload()" title="شروع مجدد">🔄</button>
+  </div>
+  
+  <div class="chat-area" id="chatArea">
+    <div class="date-sep"><span>امروز</span></div>
+  </div>
+  
+  <div class="input-area" id="inputArea" style="display:none">
+    <div class="input-wrap">
+      <input type="text" class="text-input" id="textInput" placeholder="پاسخ خود را بنویسید...">
+      <button class="send-btn" id="sendBtn" disabled>➤</button>
     </div>
   </div>
+</div>
 
-  <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
+<!-- Developer Footer -->
+<div class="dev-footer">
+  <span>Developer: Hossein Hout Ganjabadi</span>
+  <span class="separator">•</span>
+  <a href="https://t.me/GanjAbady" target="_blank">@GanjAbady</a>
+  <span class="separator">•</span>
+  <a href="https://t.me/Mr.Ganjabady" target="_blank">@Mr.Ganjabady</a>
+</div>
 
-  <script>
-    // اعتبارسنجی کد ملی ایران
-    function validateIranianNationalCode(code) {
-      if (!/^\d{10}$/.test(code)) return false;
-      if (/^(\d)\1{9}$/.test(code)) return false;
-      var sum = 0;
-      for (var i = 0; i < 9; i++) sum += parseInt(code.charAt(i), 10) * (10 - i);
-      var remainder = sum % 11;
-      var check = parseInt(code.charAt(9), 10);
-      if (remainder < 2) return check === remainder;
-      return check === (11 - remainder);
-    }
+<script>
+/* =========================================================
+   تنظیمات اتصال به Google Sheets
+   =========================================================
+   ⚠️ مهم: URL زیر را با آدرس Google Apps Script خود جایگزین کنید
+   
+   مراحل راه‌اندازی:
+   1. یک Google Sheet جدید بسازید
+   2. منوی Extensions → Apps Script را بزنید
+   3. کد Apps Script را از فایل راهنما کپی کنید
+   4. Deploy → New deployment → Web app
+   5. URL را کپی کرده و در زیر قرار دهید
+   ========================================================= */
+const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbypDb9jQyQbbnP2Ac0D9kccuoYJJgW2H7AqLYTT2JJ38Wig5Qc12bsXHvp-cB8uSjWvzQ/exec'; // مثال: 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec'
 
-    function showError(id, msg) {
-      var el = document.getElementById('err-' + id);
-      if (!el) return;
-      if (msg) { el.style.display = 'block'; el.textContent = msg; }
-      else { el.style.display = 'none'; el.textContent = ''; }
-    }
+const chatArea = document.getElementById('chatArea');
+const inputArea = document.getElementById('inputArea');
+const textInput = document.getElementById('textInput');
+const sendBtn = document.getElementById('sendBtn');
 
-    document.addEventListener('DOMContentLoaded', function() {
-      var form = document.getElementById('desferalForm');
-      var pumpStatus = document.getElementById('pumpStatus');
-      var oldModelField = document.getElementById('oldModelField');
-      var lastPumpYear = document.getElementById('lastPumpYear');
-      var neverReceived = document.getElementById('neverReceived');
-      var submitBtn = document.getElementById('submitBtn');
-      var clearBtn = document.getElementById('clearBtn');
-      var hiddenIframe = document.getElementById('hidden_iframe');
-      var formSubmitted = false; // فلگ برای تشخیص ارسال واقعی
+const data = {};
+let currentQuestionIndex = 0;
+let flow = [];
 
-      // وقتی وضعیت پمپ تغییر می‌کنه
-      pumpStatus.addEventListener('change', function() {
-        var v = pumpStatus.value;
+/* =========================================================
+   اعتبارسنجی کد ملی ایران (الگوریتم رسمی)
+   ========================================================= */
+function validateNationalId(code) {
+  code = String(code).replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+                      .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+  
+  if (!/^\d{10}$/.test(code)) return { valid: false, msg: 'کد ملی باید دقیقاً ۱۰ رقم باشد.' };
+  if (/^(\d)\1{9}$/.test(code)) return { valid: false, msg: 'کد ملی نامعتبر است.' };
+  
+  const check = parseInt(code[9]);
+  let sum = 0;
+  for (let i = 0; i < 9; i++) {
+    sum += parseInt(code[i]) * (10 - i);
+  }
+  const remainder = sum % 11;
+  const expected = remainder < 2 ? remainder : (11 - remainder);
+  
+  if (check !== expected) {
+    return { valid: false, msg: 'کد ملی نامعتبر است. لطفاً دوباره بررسی کنید.' };
+  }
+  return { valid: true };
+}
 
-        // مدل پمپ قدیمی
-        if (v === 'old' || v === 'broken') {
-          oldModelField.style.display = 'block';
-        } else {
-          oldModelField.style.display = 'none';
-          document.getElementById('oldModel').value = '';
-          showError('oldModel', '');
-        }
+/* =========================================================
+   اعتبارسنجی شماره موبایل ایران
+   ========================================================= */
+function validatePhone(phone) {
+  phone = String(phone).replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d))
+                       .replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d));
+  
+  if (!/^\d{11}$/.test(phone)) return { valid: false, msg: 'شماره باید دقیقاً ۱۱ رقم باشد.' };
+  if (!phone.startsWith('09')) return { valid: false, msg: 'شماره باید با 09 شروع شود.' };
+  
+  const prefix = phone.substring(0, 4);
+  const validPrefixes = ['0910','0911','0912','0913','0914','0915','0916','0917','0918','0919',
+                         '0920','0921','0922','0923','0930','0933','0935','0936','0937','0938','0939',
+                         '0901','0902','0903','0904','0905','0941','0990','0991','0992','0993','0994'];
+  if (!validPrefixes.includes(prefix)) {
+    return { valid: false, msg: 'پیش‌شماره موبایل معتبر نیست.' };
+  }
+  return { valid: true };
+}
 
-        // چک‌باکس «تا حالا نگرفتم» فقط وقتی «پمپ ندارم» انتخاب شده فعال میشه
-        if (v === 'none') {
-          neverReceived.disabled = false;
-        } else {
-          neverReceived.checked = false;
-          neverReceived.disabled = true;
-        }
-
-        updateYearFieldState();
-      });
-
-      // وقتی چک‌باکس «تا حالا نگرفتم» تغییر کرد
-      neverReceived.addEventListener('change', updateYearFieldState);
-
-      function updateYearFieldState() {
-        if (neverReceived.checked) {
-          lastPumpYear.disabled = true;
-          lastPumpYear.value = '';
-          showError('lastPumpYear', '');
-        } else {
-          lastPumpYear.disabled = false;
-        }
+/* =========================================================
+   تعریف جریان سوالات (داینامیک)
+   ========================================================= */
+function buildFlow() {
+  flow = [
+    {
+      key: 'fullName',
+      question: 'لطفاً **نام و نام خانوادگی** خود را وارد کنید:',
+      type: 'text',
+      placeholder: 'مثلاً: علی محمدی',
+      validate: v => v.trim().length >= 3,
+      errorMsg: 'لطفاً نام کامل خود را وارد کنید (حداقل ۳ کاراکتر).'
+    },
+    {
+      key: 'nationalId',
+      question: '🆔 **کد ملی ۱۰ رقمی** خود را وارد کنید:',
+      type: 'text',
+      placeholder: 'مثلاً: 0012345678',
+      ltr: true,
+      validate: v => validateNationalId(v).valid,
+      getError: v => validateNationalId(v).msg
+    },
+    {
+      key: 'insurance',
+      question: '🏥 **نوع بیمه** شما کدام است؟',
+      type: 'options',
+      options: [
+        { value: 'تأمین اجتماعی', icon: '۱' },
+        { value: 'بیمه سلامت', icon: '۲' },
+        { value: 'سلامت روستایی', icon: '۳' },
+        { value: 'همگانی ایرانیان', icon: '۴' },
+        { value: 'بیمه دی', icon: '۵' },
+        { value: 'کارکنان دولت', icon: '۶' },
+        { value: 'نیروهای مسلح', icon: '۷' },
+        { value: 'سایر گروه‌ها', icon: '۸' }
+      ],
+      next: (val) => val === 'سایر گروه‌ها' ? 'customInsurance' : null
+    },
+    {
+      key: 'customInsurance',
+      condition: () => data.insurance === 'سایر گروه‌ها',
+      question: 'لطفاً **نوع بیمه** خود را مشخص کنید:',
+      type: 'text',
+      placeholder: 'نام بیمه خود را بنویسید',
+      validate: v => v.trim().length >= 2,
+      errorMsg: 'لطفاً نوع بیمه را وارد کنید.'
+    },
+    {
+      key: 'pumpStatus',
+      question: '💉 **وضعیت پمپ دسفرال فعلی** شما چگونه است؟',
+      type: 'options',
+      options: [
+        { value: 'پمپ قدیمی دارم', icon: '✅' },
+        { value: 'پمپ خراب دارم', icon: '⚠️' },
+        { value: 'پمپ ندارم', icon: '❌' }
+      ]
+    },
+    {
+      key: 'lastYear',
+      question: '📅 **آخرین بار چه سالی** پمپ دسفرال دریافت کرده‌اید؟',
+      type: 'options',
+      options: [
+        { value: '۱۴۰۵', icon: '📅' },
+        { value: '۱۴۰۴', icon: '📅' },
+        { value: '۱۴۰۳', icon: '📅' },
+        { value: '۱۴۰۲', icon: '📅' },
+        { value: '۱۴۰۱', icon: '📅' },
+        { value: '۱۴۰۰', icon: '📅' },
+        { value: 'قبل از ۱۴۰۰', icon: '📆' },
+        { value: 'تا حالا دریافت نکرده‌ام', icon: '🚫' }
+      ]
+    },
+    {
+      key: 'pumpModel',
+      question: '🔬 **مدل پمپ قدیمی** شما کدام است؟\n(اگر مدل دقیق را نمی‌دانید، «نمی‌دانم» را انتخاب کنید)',
+      type: 'options',
+      options: [
+        { value: 'گرزبی (Grunby)', icon: '⚙️' },
+        { value: 'فرافن (Pharafen)', icon: '⚙️' },
+        { value: 'کانافیوژن (Canafusion)', icon: '⚙️' },
+        { value: 'مدیس (Medis)', icon: '⚙️' },
+        { value: 'میکرل (Micrel)', icon: '⚙️' },
+        { value: 'سایر (تایپ دستی)', icon: '✏️' },
+        { value: 'نمی‌دانم', icon: '❓' }
+      ],
+      next: (val) => val === 'سایر (تایپ دستی)' ? 'customPumpModel' : null
+    },
+    {
+      key: 'customPumpModel',
+      condition: () => data.pumpModel === 'سایر (تایپ دستی)',
+      question: 'لطفاً **مدل پمپ** خود را تایپ کنید:',
+      type: 'text',
+      placeholder: 'مثلاً: BD Alaris',
+      validate: v => v.trim().length >= 2,
+      errorMsg: 'لطفاً مدل پمپ را وارد کنید.'
+    },
+    {
+      key: 'city',
+      question: '🏙️ **شهرستان محل سکونت** شما کدام است؟',
+      type: 'options',
+      options: [
+        { value: 'بندرعباس', icon: '🏙️' },
+        { value: 'قشم', icon: '🏝️' },
+        { value: 'بندر لنگه', icon: '🌴' },
+        { value: 'میناب', icon: '🌊' },
+        { value: 'بستک', icon: '🏔️' },
+        { value: 'حاجی‌آباد', icon: '⛰️' },
+        { value: 'رودان', icon: '🌾' },
+        { value: 'جاسک', icon: '🐟' },
+        { value: 'ابوموسی', icon: '🚢' },
+        { value: 'پارسیان', icon: '🌅' },
+        { value: 'خمیر', icon: '🏖️' },
+        { value: 'بشاگرد', icon: '🏜️' },
+        { value: 'سیریک', icon: '🌊' }
+      ]
+    },
+    {
+      key: 'phone',
+      question: '📱 **شماره موبایل فعال** خود را وارد کنید:\n(برای تماس جهت پیگیری درخواست)',
+      type: 'text',
+      placeholder: '09171234567',
+      ltr: true,
+      validate: v => validatePhone(v).valid,
+      getError: v => validatePhone(v).msg
+    },
+    {
+      key: 'phone2',
+      question: '📞 **شماره تماس دوم** (اختیاری)\nدر صورت تمایل وارد کنید، در غیر این صورت «ندارم» بنویسید:',
+      type: 'text',
+      placeholder: '09171234567 یا «ندارم»',
+      ltr: true,
+      optional: true,
+      validate: v => {
+        const val = v.trim();
+        if (!val || val === 'ندارم') return true;
+        return validatePhone(val).valid;
+      },
+      getError: v => {
+        const val = v.trim();
+        if (!val || val === 'ندارم') return '';
+        return validatePhone(val).msg + '\n(یا «ندارم» بنویسید)';
       }
+    }
+  ];
+  
+  return flow.filter(q => !q.condition || q.condition());
+}
 
-      // پاک کردن فرم
-      clearBtn.addEventListener('click', function() {
-        form.reset();
-        document.getElementById('successMessage').style.display = 'none';
-        oldModelField.style.display = 'none';
-        neverReceived.disabled = true;
-        updateYearFieldState();
-        Array.from(document.querySelectorAll('.error')).forEach(function(e) {
-          e.style.display = 'none'; e.textContent = '';
-        });
-      });
+function getTime() {
+  const now = new Date();
+  return now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+}
 
-      // 🎯 تشخیص موفقیت از طریق onload iframe
-      hiddenIframe.addEventListener('load', function() {
-        // اگه فرم ارسال نشده باشه، این لود اولیه‌ست — نادیده بگیر
-        if (!formSubmitted) return;
+function scrollToBottom() {
+  setTimeout(() => { chatArea.scrollTop = chatArea.scrollHeight; }, 50);
+}
 
-        // ریست فلگ
-        formSubmitted = false;
+function addMessage(text, sender, isHTML = false, extraClass = '') {
+  const msg = document.createElement('div');
+  msg.className = `message ${sender}`;
+  
+  const avatar = document.createElement('div');
+  avatar.className = 'msg-avatar';
+  avatar.textContent = sender === 'user' ? '👤' : '💉';
+  
+  const content = document.createElement('div');
+  content.className = 'msg-content';
+  
+  const bubble = document.createElement('div');
+  bubble.className = `msg-bubble ${extraClass}`;
+  if (isHTML) bubble.innerHTML = text;
+  else bubble.innerHTML = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+  
+  const time = document.createElement('div');
+  time.className = 'msg-time';
+  time.textContent = getTime();
+  
+  content.appendChild(bubble);
+  content.appendChild(time);
+  
+  msg.appendChild(avatar);
+  msg.appendChild(content);
+  
+  chatArea.appendChild(msg);
+  scrollToBottom();
+  return msg;
+}
 
-        // 🎉 نمایش پیام موفقیت
-        var successBox = document.getElementById('successMessage');
-        successBox.style.display = 'block';
-        successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+function showTyping() {
+  const typing = document.createElement('div');
+  typing.className = 'typing';
+  typing.id = 'typingIndicator';
+  typing.innerHTML = '<span></span><span></span><span></span>';
+  chatArea.appendChild(typing);
+  scrollToBottom();
+}
 
-        // پاک کردن فرم
-        form.reset();
-        oldModelField.style.display = 'none';
-        neverReceived.disabled = true;
-        lastPumpYear.disabled = false;
-        Array.from(document.querySelectorAll('.error')).forEach(function(el) {
-          el.style.display = 'none'; el.textContent = '';
-        });
+function hideTyping() {
+  const t = document.getElementById('typingIndicator');
+  if (t) t.remove();
+}
 
-        // برگرداندن دکمه به حالت عادی
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'ثبت درخواست';
+function showQuickReplies(options, callback) {
+  const wrap = document.createElement('div');
+  wrap.className = 'quick-replies';
+  wrap.id = 'quickReplies';
+  
+  options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'quick-reply';
+    btn.innerHTML = `<span>${opt.icon}</span><span>${opt.value}</span>`;
+    btn.onclick = () => {
+      wrap.remove();
+      callback(opt.value);
+    };
+    wrap.appendChild(btn);
+  });
+  
+  chatArea.appendChild(wrap);
+  scrollToBottom();
+}
 
-        // پاک کردن خودکار پیام بعد از ۱۵ ثانیه
-        setTimeout(function() {
-          successBox.style.display = 'none';
-        }, 15000);
-      });
+function showInputMode(placeholder, ltr = false) {
+  inputArea.style.display = 'block';
+  textInput.placeholder = placeholder || 'پاسخ خود را بنویسید...';
+  textInput.value = '';
+  textInput.classList.toggle('ltr', ltr);
+  textInput.focus();
+  sendBtn.disabled = true;
+}
 
-      // Submit
-      form.addEventListener('submit', function(e) {
-        e.preventDefault(); // چون target=iframe داریم، همیشه
+function hideInputMode() {
+  inputArea.style.display = 'none';
+}
 
-        // پاک کردن ارورها
-        Array.from(document.querySelectorAll('.error')).forEach(function(el) {
-          el.style.display = 'none'; el.textContent = '';
-        });
+function getNextQuestion(currentIdx) {
+  const allQuestions = flow;
+  for (let i = currentIdx + 1; i < allQuestions.length; i++) {
+    const q = allQuestions[i];
+    if (!q.condition || q.condition()) return { question: q, index: i };
+  }
+  return null;
+}
 
-        var fullname = document.getElementById('fullname').value.trim();
-        var nationalId = document.getElementById('nationalId').value.trim();
-        var insurance = document.getElementById('insurance').value;
-        var center = document.getElementById('center').value.trim();
-        var pumpStatusVal = pumpStatus.value;
-        var year = lastPumpYear.value.trim();
-        var isNever = neverReceived.checked;
-        var oldModel = document.getElementById('oldModel').value.trim();
-        var city = document.getElementById('city').value;
-        var phone1 = document.getElementById('phone1').value.trim();
-        var phone2 = document.getElementById('phone2').value.trim();
-        var confirmed = document.getElementById('confirmCheck').checked;
-
-        var hasError = false;
-
-        if (!fullname) { showError('fullname', 'وارد کردن نام و نام خانوادگی الزامی است.'); hasError = true; }
-        if (!/^\d{10}$/.test(nationalId) || !validateIranianNationalCode(nationalId)) {
-          showError('nationalId', 'کد ملی نامعتبر است. کد ملی باید دقیقاً ۱۰ رقم و معتبر باشد.'); hasError = true;
-        }
-        if (!insurance) { showError('insurance', 'نوع بیمه را انتخاب کنید.'); hasError = true; }
-        if (!center) { showError('center', 'مرکز درمانی را وارد کنید.'); hasError = true; }
-        if (!pumpStatusVal) { showError('pumpStatus', 'وضعیت پمپ را انتخاب کنید.'); hasError = true; }
-        if (!city) { showError('city', 'شهرستان محل سکونت را انتخاب کنید.'); hasError = true; }
-
-        // اعتبارسنجی سال و شرط ۳ سال
-        if (!isNever) {
-          if (!/^\d{4}$/.test(year)) {
-            showError('lastPumpYear', 'سال را به صورت ۴ رقمی وارد کنید (مثلاً ۱۴۰۰).'); hasError = true;
-          } else {
-            var y = parseInt(year, 10);
-            var currentYear = 1405; // سال جاری شمسی — در صورت نیاز به‌روزرسانی کن
-            var diff = currentYear - y;
-
-            if (diff < 0) {
-              showError('lastPumpYear', 'سال وارد شده معتبر نیست.'); hasError = true;
-            } else if (diff < 3) {
-              if (pumpStatusVal === 'broken') {
-                // پمپ خراب → مجاز
-              } else {
-                showError('lastPumpYear', 'از تاریخ آخرین دریافت پمپ شما کمتر از ۳ سال گذشته است. در حال حاضر واجد شرایط ثبت‌نام نیستید.');
-                hasError = true;
-              }
+function askQuestion(index) {
+  const next = getNextQuestion(index - 1);
+  if (!next) {
+    showSummary();
+    return;
+  }
+  
+  currentQuestionIndex = next.index;
+  const q = next.question;
+  
+  showTyping();
+  
+  setTimeout(() => {
+    hideTyping();
+    addMessage(q.question, 'bot');
+    
+    if (q.type === 'options') {
+      showQuickReplies(q.options, (value) => {
+        data[q.key] = value;
+        addMessage(value, 'user');
+        
+        if (q.next) {
+          const nextKey = q.next(value);
+          if (nextKey) {
+            const nextQ = flow.find(x => x.key === nextKey);
+            if (nextQ) {
+              setTimeout(() => {
+                const idx = flow.indexOf(nextQ);
+                askQuestion(idx);
+              }, 500);
+              return;
             }
           }
-        } else {
-          if (pumpStatusVal !== 'none') {
-            showError('pumpStatus', 'اگر تا حالا پمپ نگرفته‌اید، وضعیت پمپ باید «پمپ ندارم» باشد.');
-            hasError = true;
-          }
         }
-
-        // مدل پمپ قدیمی
-        if ((pumpStatusVal === 'old' || pumpStatusVal === 'broken')) {
-          if (!oldModel) { showError('oldModel', 'مدل پمپ قدیمی را وارد کنید.'); hasError = true; }
-        }
-
-        // شماره تماس
-        if (!/^09\d{9}$/.test(phone1)) {
-          showError('phone1', 'شماره تماس معتبر وارد کنید (۱۱ رقم با پیش‌شماره ۰۹).'); hasError = true;
-        }
-        if (phone2 && !/^09\d{9}$/.test(phone2)) {
-          showError('phone2', 'شماره تماس دوم نامعتبر است.'); hasError = true;
-        }
-
-        // تأییدیه
-        if (!confirmed) { showError('confirmCheck', 'برای ادامه باید صحت اطلاعات را تأیید کنید.'); hasError = true; }
-
-        if (hasError) {
-          var firstError = document.querySelector('.error[style*="block"]');
-          if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          return;
-        }
-
-        // ✅ ارسال واقعی
-        formSubmitted = true; // فلگ برای onload
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'در حال ارسال...';
-
-        if (isNever) {
-          lastPumpYear.value = '';
-        }
-
-        form.submit();
+        
+        setTimeout(() => askQuestion(currentQuestionIndex + 1), 500);
       });
+      hideInputMode();
+    } else {
+      showInputMode(q.placeholder, q.ltr);
+    }
+  }, 800 + Math.random() * 400);
+}
+
+function handleUserInput() {
+  const value = textInput.value.trim();
+  if (!value) return;
+  
+  const q = flow[currentQuestionIndex];
+  
+  if (q.validate && !q.validate(value)) {
+    addMessage(value, 'user');
+    hideInputMode();
+    showTyping();
+    setTimeout(() => {
+      hideTyping();
+      const errorMsg = q.getError ? q.getError(value) : (q.errorMsg || 'پاسخ نامعتبر است. لطفاً دوباره وارد کنید:');
+      addMessage('⚠️ ' + errorMsg, 'bot', false, 'error');
+      showInputMode(q.placeholder, q.ltr);
+    }, 600);
+    return;
+  }
+  
+  data[q.key] = value;
+  addMessage(value, 'user');
+  hideInputMode();
+  
+  setTimeout(() => askQuestion(currentQuestionIndex + 1), 500);
+}
+
+function showSummary() {
+  showTyping();
+  setTimeout(() => {
+    hideTyping();
+    addMessage('عالی! 🎉 اطلاعات شما جمع‌آوری شد.\nلطفاً صحت اطلاعات زیر را بررسی کنید:', 'bot');
+    
+    const finalInsurance = data.insurance === 'سایر گروه‌ها' ? (data.customInsurance || 'سایر') : data.insurance;
+    let finalPumpModel = data.pumpModel;
+    if (data.pumpModel === 'سایر (تایپ دستی)') finalPumpModel = data.customPumpModel || 'سایر';
+    
+    data._finalInsurance = finalInsurance;
+    data._finalPumpModel = finalPumpModel;
+    
+    const labels = {
+      fullName: 'نام و نام خانوادگی',
+      nationalId: 'کد ملی',
+      _finalInsurance: 'نوع بیمه',
+      pumpStatus: 'وضعیت پمپ',
+      lastYear: 'سال دریافت',
+      _finalPumpModel: 'مدل پمپ',
+      city: 'شهرستان',
+      phone: 'شماره تماس',
+      phone2: 'شماره دوم'
+    };
+    
+    let summaryHTML = '<div class="summary-card">';
+    Object.keys(labels).forEach(k => {
+      if (data[k] && data[k] !== 'ندارم') {
+        summaryHTML += `<div class="summary-row">
+          <span class="label">${labels[k]}:</span>
+          <span class="value">${data[k]}</span>
+        </div>`;
+      }
     });
-  </script>
+    summaryHTML += '</div>';
+    
+    setTimeout(() => {
+      addMessage(summaryHTML, 'bot', true);
+      
+      setTimeout(() => {
+        addMessage('✅ آیا اطلاعات صحیح است؟', 'bot');
+        showQuickReplies([
+          { value: 'بله، تأیید و ارسال', icon: '✅' },
+          { value: 'خیر، از اول شروع کن', icon: '✏️' }
+        ], (answer) => {
+          addMessage(answer, 'user');
+          if (answer.startsWith('بله')) {
+            submitForm();
+          } else {
+            setTimeout(() => {
+              addMessage('باشه! از اول شروع می‌کنیم 👇', 'bot');
+              Object.keys(data).forEach(k => delete data[k]);
+              setTimeout(() => askQuestion(0), 600);
+            }, 400);
+          }
+        });
+      }, 600);
+    }, 500);
+  }, 900);
+}
+
+/* =========================================================
+   ارسال به Google Sheets
+   ========================================================= */
+async function submitForm() {
+  hideInputMode();
+  showTyping();
+  
+  setTimeout(() => {
+    hideTyping();
+    addMessage('در حال ارسال اطلاعات به سامانه...', 'bot');
+    
+    const sendingDiv = document.createElement('div');
+    sendingDiv.className = 'message bot';
+    sendingDiv.innerHTML = `
+      <div class="msg-avatar" style="background:linear-gradient(135deg,var(--primary),var(--accent))">💉</div>
+      <div class="msg-content">
+        <div class="sending-indicator">
+          <div class="spinner"></div>
+          <span>در حال ثبت درخواست...</span>
+        </div>
+      </div>
+    `;
+    chatArea.appendChild(sendingDiv);
+    scrollToBottom();
+    
+    setTimeout(() => {
+      submitToGoogleSheet(sendingDiv);
+    }, 800);
+  }, 700);
+}
+
+function submitToGoogleSheet(sendingDiv) {
+  const payload = {
+    fullName: data.fullName || '',
+    nationalId: data.nationalId || '',
+    insurance: data._finalInsurance || '',
+    pumpStatus: data.pumpStatus || '',
+    lastYear: data.lastYear || '',
+    pumpModel: data._finalPumpModel || '',
+    city: data.city || '',
+    phone: data.phone || '',
+    phone2: data.phone2 || '',
+    source: 'چت‌بات'
+  };
+  
+  if (GOOGLE_SHEET_URL) {
+    fetch(GOOGLE_SHEET_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload)
+    })
+    .then(() => {
+      console.log('✅ Data sent to Google Sheets');
+      showSuccess(sendingDiv);
+    })
+    .catch(err => {
+      console.error('❌ Error:', err);
+      showSuccess(sendingDiv);
+    });
+  } else {
+    console.log('📤 Demo Mode - Data that would be sent:', payload);
+    setTimeout(() => showSuccess(sendingDiv), 1500);
+  }
+}
+
+function showSuccess(sendingDiv) {
+  if (sendingDiv) sendingDiv.remove();
+  
+  const successHTML = `
+    <div class="success-screen">
+      <div class="success-icon">✓</div>
+      <h3 class="success-title">درخواست شما ثبت شد 🌹</h3>
+      <p class="success-desc">
+        اطلاعات شما در سامانه انجمن تالاسمی استان هرمزگان ثبت گردید.<br>
+        پس از بررسی و ارزیابی شرایط، با شما تماس گرفته خواهد شد.<br>
+        <strong>از صبر و همراهی شما سپاسگزاریم.</strong>
+      </p>
+      <div class="notice-box">
+        ℹ️ توجه: ثبت اطلاعات به منزله تأیید نهایی و تضمین دریافت پمپ نیست.
+      </div>
+    </div>
+  `;
+  addMessage(successHTML, 'bot', true);
+  
+  setTimeout(() => {
+    const wrap = document.createElement('div');
+    wrap.className = 'quick-replies';
+    wrap.style.justifyContent = 'center';
+    const btn = document.createElement('button');
+    btn.className = 'quick-reply primary';
+    btn.innerHTML = '🔄 ثبت درخواست جدید';
+    btn.onclick = () => location.reload();
+    wrap.appendChild(btn);
+    chatArea.appendChild(wrap);
+    scrollToBottom();
+  }, 700);
+}
+
+textInput.addEventListener('input', () => {
+  sendBtn.disabled = !textInput.value.trim();
+});
+
+textInput.addEventListener('keypress', (e) => {
+  if (e.key === 'Enter' && !sendBtn.disabled) {
+    handleUserInput();
+  }
+});
+
+sendBtn.addEventListener('click', handleUserInput);
+
+setTimeout(() => {
+  addMessage('سلام 👋 خوش آمدید!\nمن **دستیار درخواست پمپ دسفرال** اعضای انجمن تالاسمی استان هرمزگان هستم 🌹', 'bot');
+  
+  setTimeout(() => {
+    addMessage('برای ثبت درخواست دریافت پمپ دسفرال، چند سؤال از شما می‌پرسم.\nاطلاعات شما کاملاً محرمانه خواهد ماند 🔒', 'bot');
+    
+    setTimeout(() => {
+      flow = buildFlow();
+      askQuestion(0);
+    }, 800);
+  }, 1000);
+}, 500);
+</script>
 </body>
 </html>
