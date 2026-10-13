@@ -51,6 +51,13 @@
     @media (max-width:640px){
       .actions { flex-direction:column; align-items:stretch; }
     }
+    .message.success {
+  animation: fadeInUp 0.5s ease;
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
   </style>
 </head>
 <body>
@@ -316,7 +323,7 @@
             showError('lastPumpYear', 'سال را به صورت ۴ رقمی وارد کنید (مثلاً ۱۴۰۰).'); hasError = true;
           } else {
             var y = parseInt(year, 10);
-            var currentYear = 1404; // سال جاری شمسی — در صورت نیاز به‌روزرسانی کن
+            var currentYear = 1405; // سال جاری شمسی — در صورت نیاز به‌روزرسانی کن
             var diff = currentYear - y;
 
             if (diff < 0) {
@@ -371,24 +378,37 @@
       });
 
       // گوش دادن به پاسخ از Apps Script
-      window.addEventListener('message', function(event) {
-        if (event.data && event.data.status === 'ok') {
-          document.getElementById('successMessage').style.display = 'block';
-          form.reset();
-          oldModelField.style.display = 'none';
-          neverReceived.disabled = true;
-          lastPumpYear.disabled = false;
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'ثبت درخواست';
-          setTimeout(function() {
-            document.getElementById('successMessage').style.display = 'none';
-          }, 5000);
-        } else if (event.data && event.data.status === 'error') {
-          alert('خطا در ثبت درخواست: ' + (event.data.message || 'خطای ناشناخته'));
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'ثبت درخواست';
-        }
-      });
+window.addEventListener('message', function(event) {
+  if (event.data && event.data.status === 'ok') {
+    // نمایش پیام موفقیت
+    var successBox = document.getElementById('successMessage');
+    successBox.style.display = 'block';
+    successBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+    // پاک کردن فرم
+    form.reset();
+    oldModelField.style.display = 'none';
+    neverReceived.disabled = true;
+    lastPumpYear.disabled = false;
+    Array.from(document.querySelectorAll('.error')).forEach(function(el) {
+      el.style.display = 'none'; el.textContent = '';
+    });
+
+    // برگرداندن دکمه به حالت عادی
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'ثبت درخواست';
+
+    // پاک کردن خودکار پیام بعد از ۱۵ ثانیه (اختیاری)
+    setTimeout(function() {
+      successBox.style.display = 'none';
+    }, 15000);
+
+  } else if (event.data && event.data.status === 'error') {
+    alert('خطا در ثبت درخواست: ' + (event.data.message || 'خطای ناشناخته'));
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'ثبت درخواست';
+  }
+});
     });
   </script>
 </body>
