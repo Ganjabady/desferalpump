@@ -183,9 +183,19 @@
       </div>
     </form>
 
-    <div id="successMessage" class="message success" style="display:none; margin-top:12px;">
-      درخواست شما با موفقیت ثبت شد. پس از بررسی، با شما تماس گرفته خواهد شد.
-    </div>
+<div id="successMessage" class="message success" style="display:none; margin-top:16px; text-align:center; padding:20px;">
+  <div style="font-size:48px; margin-bottom:10px;">✅</div>
+  <div style="font-size:18px; font-weight:bold; margin-bottom:8px;">درخواست شما با موفقیت ثبت شد</div>
+  <div style="font-size:14px; line-height:1.8;">
+    اطلاعات شما در سامانه ثبت گردید. پس از بررسی و ارزیابی شرایط، با شما تماس گرفته خواهد شد.
+    <br>
+    از صبر و همراهی شما سپاسگزاریم. 🌹
+  </div>
+  <button type="button" onclick="document.getElementById('successMessage').style.display='none';" 
+          style="margin-top:14px; background:#0b6f36; color:#fff; border:none; padding:8px 20px; border-radius:6px; cursor:pointer; font-weight:600;">
+    متوجه شدم
+  </button>
+</div>
   </div>
 
   <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;"></iframe>
