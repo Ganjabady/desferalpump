@@ -39,6 +39,8 @@
       background: #fff;
       font-size: 14px;
     }
+    .inline-selects { display:flex; gap:8px; }
+    .inline-selects select { width:auto; min-width:90px; flex: none; }
     .note { font-size:13px; color:#666; margin-top:6px;}
     .error { color: #d93025; font-size:13px; margin-top:6px; display:none; }
     .actions { margin-top: 18px; display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
@@ -80,6 +82,7 @@
     .muted { color:#666; font-size:13px; margin-top:6px; }
     @media (max-width:640px){
       .actions { flex-direction:column; align-items:stretch; }
+      .inline-selects { flex-direction:column; }
     }
   </style>
 </head>
@@ -124,9 +127,21 @@
         <div id="err-center" class="error"></div>
       </div>
 
+      <!-- تاریخ آخرین دریافت پمپ دسفرال - اکنون به صورت انتخابی (سال/ماه/روز) -->
       <div class="field">
-        <label for="lastPumpDate">تاریخ آخرین دریافت پمپ دسفرال (تاریخ شمسی - YYYY/MM/DD) *</label>
-        <input id="lastPumpDate" name="lastPumpDate" type="text" placeholder="۱۴۰۰/۰۶/۱۵" />
+        <label>تاریخ آخرین دریافت پمپ دسفرال (تاریخ شمسی) *</label>
+        <div class="inline-selects">
+          <select id="lastPumpYear" name="lastPumpYear">
+            <option value="">سال</option>
+          </select>
+          <select id="lastPumpMonth" name="lastPumpMonth">
+            <option value="">ماه</option>
+          </select>
+          <select id="lastPumpDay" name="lastPumpDay">
+            <option value="">روز</option>
+          </select>
+        </div>
+        <div class="note">لطفاً سال، ماه و روز را انتخاب کنید (مثال: ۱۴۰۰ / ۶ / ۱۵)</div>
         <div id="err-lastPumpDate" class="error"></div>
       </div>
 
@@ -267,6 +282,18 @@
       return { ok: lastDate <= threeYearsAgo, lastDate: lastDate, threeYearsAgo: threeYearsAgo };
     }
 
+    // اگر از selects استفاده شده، تاریخ را می‌سازیم
+    function buildJalaliFromSelects() {
+      var y = document.getElementById('lastPumpYear').value;
+      var m = document.getElementById('lastPumpMonth').value;
+      var d = document.getElementById('lastPumpDay').value;
+      if (!y || !m || !d) return null;
+      // بازگشت به فرمت YYYY/MM/DD
+      var mm = m.toString().padStart(2, '0');
+      var dd = d.toString().padStart(2, '0');
+      return y + '/' + mm + '/' + dd;
+    }
+
     const STORAGE_KEY = 'desferalApplications_v1';
 
     function loadData() {
@@ -403,6 +430,22 @@
       const oldModelField = document.getElementById('oldModelField');
       const submitBtn = document.getElementById('submitBtn');
 
+      // populate year select (1390..1405)
+      const yearSelect = document.getElementById('lastPumpYear');
+      for (let y = 1405; y >= 1390; y--) {
+        const opt = document.createElement('option'); opt.value = y; opt.textContent = y.toString(); yearSelect.appendChild(opt);
+      }
+      // populate months 1..12
+      const monthSelect = document.getElementById('lastPumpMonth');
+      for (let m = 1; m <= 12; m++) {
+        const opt = document.createElement('option'); opt.value = m; opt.textContent = m.toString(); monthSelect.appendChild(opt);
+      }
+      // populate days 1..31
+      const daySelect = document.getElementById('lastPumpDay');
+      for (let d = 1; d <= 31; d++) {
+        const opt = document.createElement('option'); opt.value = d; opt.textContent = d.toString(); daySelect.appendChild(opt);
+      }
+
       pumpStatus.addEventListener('change', () => {
         const v = pumpStatus.value;
         if (v === 'old' || v === 'broken') {
@@ -446,7 +489,9 @@
         const nationalId = document.getElementById('nationalId').value.trim();
         const insurance = document.getElementById('insurance').value;
         const center = document.getElementById('center').value.trim();
-        const lastPumpDate = document.getElementById('lastPumpDate').value.trim();
+        // build lastPumpDate from selects
+        const lastPumpDateBuilt = buildJalaliFromSelects();
+        const lastPumpDate = lastPumpDateBuilt || document.getElementById('lastPumpDate')?.value?.trim() || '';
         const city = document.getElementById('city').value.trim();
         const phone1 = document.getElementById('phone1').value.trim();
         const phone2 = document.getElementById('phone2').value.trim();
@@ -464,13 +509,17 @@
         if (!insurance) { showError('insurance', 'نوع بیمه را انتخاب کنید.'); hasError = true; }
         if (!center) { showError('center', 'مرکز درمانی را وارد کنید.'); hasError = true; }
 
-        const lastDateParsed = parseJalaliDate(lastPumpDate);
-        if (!lastPumpDate || !lastDateParsed) {
-          showError('lastPumpDate', 'تاریخ شمسی معتبر وارد کنید (مثال: ۱۴۰۰/۰۶/۱۵).'); hasError = true;
+        if (!lastPumpDate) {
+          showError('lastPumpDate', 'تاریخ آخرین دریافت پمپ را کامل انتخاب کنید.'); hasError = true;
         } else {
-          const res = atLeastThreeYearsPassed(lastPumpDate);
-          if (!res.ok) {
-            showError('lastPumpDate', 'از تاریخ آخرین دریافت پمپ شما کمتر از ۳ سال گذشته است. در حال حاضر واجد شرایط ثبت‌نام نیستید.'); hasError = true;
+          const lastDateParsed = parseJalaliDate(lastPumpDate);
+          if (!lastDateParsed) {
+            showError('lastPumpDate', 'تاریخ شمسی نامعتبر است.'); hasError = true;
+          } else {
+            const res = atLeastThreeYearsPassed(lastPumpDate);
+            if (!res.ok) {
+              showError('lastPumpDate', 'از تاریخ آخرین دریافت پمپ شما کمتر از ۳ سال گذشته است. در حال حاضر واجد شرایط ثبت‌نام نیستید.'); hasError = true;
+            }
           }
         }
 
@@ -485,7 +534,7 @@
         }
         if (!pumpStatusVal) { showError('pumpStatus', 'وضعیت پمپ را انتخاب کنید.'); hasError = true; }
         if ((pumpStatusVal === 'old' || pumpStatusVal === 'broken')) {
-          if (!oldModel) { showError('oldModel', 'مدل پمپ قدیمی را وارد کن��د.'); hasError = true; }
+          if (!oldModel) { showError('oldModel', 'مدل پمپ قدیمی را وارد کنید.'); hasError = true; }
         }
         if (!confirmed) { showError('confirmCheck', 'برای ادامه باید صحت اطلاعات را تأیید کنید.'); hasError = true; }
 
@@ -508,7 +557,13 @@
 
         // اگر APPS_SCRIPT_URL تنظیم شده باشد، فرم را به آن ارسال می‌کنیم
         if (APPS_SCRIPT_URL && APPS_SCRIPT_URL.trim() !== '') {
-          // پیکربندی فرم برای ارسال به Web App
+          // اضافه کردن hidden inputs (در صورت نبودن) تا داده‌های select ارسال شوند
+          // قبل از submit، مطمئن می‌شویم که فیلدهای lastPumpDate وجود دارند
+          // ما از selects داریم، اما برای ارسال فرم آنها را به صورت فیلدهای نام‌دار می‌فرستیم
+          // حذف هر hidden قبلی
+          ['lastPumpDate'].forEach(n => { const ex = document.querySelector('input[name="'+n+'"]'); if (ex) ex.remove(); });
+          const hidden = document.createElement('input'); hidden.type = 'hidden'; hidden.name = 'lastPumpDate'; hidden.value = lastPumpDate; form.appendChild(hidden);
+
           form.method = 'post';
           form.action = APPS_SCRIPT_URL;
           form.target = 'hidden_iframe';
