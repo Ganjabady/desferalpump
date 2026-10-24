@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>دستیار هوشمند درخواست پمپ دسفرال | انجمن تالاسمی استان هرمزگان</title>
+<title>دستیار درخواست پمپ | انجمن تالاسمی استان هرمزگان</title>
 <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Vazirmatn', sans-serif; }
@@ -622,7 +622,7 @@
 </div>
 
 <script>
-const WORKER_API_URL = 'https://pump-registration-api.ho3ein1ted8647.workers.dev/api/requests'; // نمونه: https://pump-registration-api.example.workers.dev/api/requests
+const WORKER_API_URL = 'PASTE_YOUR_CLOUDFLARE_WORKER_URL_HERE'; // نمونه: https://pump-registration-api.example.workers.dev/api/requests
 
 const chatArea = document.getElementById('chatArea');
 const inputArea = document.getElementById('inputArea');
@@ -759,7 +759,7 @@ function buildFlow() {
       type: 'options',
       options: [
         { value: 'گرزبی (Graseby)', icon: '⚙️' },
-        { value: 'فرافن (Farafan)', icon: '⚙️' },
+        { value: 'فرافن (Farafen)', icon: '⚙️' },
         { value: 'کانافیوژن (Canafusion)', icon: '⚙️' },
         { value: 'مدیس (Medis)', icon: '⚙️' },
         { value: 'میکرل (Micrel)', icon: '⚙️' },
@@ -1159,6 +1159,10 @@ async function submitToGoogleSheet(sendingDiv) {
     });
     let result = {};
     try { result = await response.json(); } catch (_) {}
+    if (result.duplicate) {
+      showDuplicate(sendingDiv, result);
+      return;
+    }
     if (!response.ok || !result.success) {
       throw new Error(result.error || 'ثبت درخواست انجام نشد. لطفاً دوباره تلاش کنید.');
     }
@@ -1187,6 +1191,31 @@ function showFailure(sendingDiv, message) {
   btn.onclick = () => location.reload();
   wrap.appendChild(btn);
   chatArea.appendChild(wrap);
+  scrollToBottom();
+}
+
+function showDuplicate(sendingDiv, result) {
+  if (sendingDiv) sendingDiv.remove();
+  const name = String(result.fullName || data.fullName || 'همراه گرامی').trim();
+  const status = String(result.status || 'جدید').trim();
+  const statusText = status === 'جدید'
+    ? 'اطلاعات شما پیش‌تر در سامانه ثبت شده است و درخواست شما در انتظار بررسی قرار دارد.'
+    : `وضعیت فعلی درخواست شما «${status}» است.`;
+  const safe = value => String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+  const html = `
+    <div class="success-screen">
+      <div class="success-icon">✓</div>
+      <h3 class="success-title">اطلاعات شما قبلاً ثبت شده است</h3>
+      <p class="success-desc">
+        همراه گرامی <strong>${safe(name)}</strong>،<br>
+        مشخصات شما پیش‌تر در سامانه انجمن حمایت از بیماران تالاسمی استان هرمزگان ثبت شده است.<br>
+        ${safe(statusText)}<br><br>
+        اگر درباره اطلاعات یا وضعیت درخواست خود پرسشی دارید، لطفاً از طریق پیام‌رسان ایتا یا واتساپ با شماره <strong dir="ltr">09170923885</strong> تماس بگیرید تا همکاران انجمن راهنمایی و پیگیری لازم را انجام دهند.
+      </p>
+      <div class="notice-box">برای جلوگیری از ثبت درخواست تکراری، فرم جدیدی ایجاد نشد.</div>
+    </div>
+  `;
+  addMessage(html, 'bot', true);
   scrollToBottom();
 }
 
