@@ -622,7 +622,7 @@
 </div>
 
 <script>
-const WORKER_API_URL = 'PASTE_YOUR_CLOUDFLARE_WORKER_URL_HERE'; // نمونه: https://pump-registration-api.example.workers.dev/api/requests
+const WORKER_API_URL = 'https://pump-registration-api.ho3ein1ted8647.workers.dev/api/requests'; // نمونه: https://pump-registration-api.example.workers.dev/api/requests
 
 const chatArea = document.getElementById('chatArea');
 const inputArea = document.getElementById('inputArea');
@@ -759,7 +759,7 @@ function buildFlow() {
       type: 'options',
       options: [
         { value: 'گرزبی (Graseby)', icon: '⚙️' },
-        { value: 'فرافن (Farafen)', icon: '⚙️' },
+        { value: 'فرافن (Farafan)', icon: '⚙️' },
         { value: 'کانافیوژن (Canafusion)', icon: '⚙️' },
         { value: 'مدیس (Medis)', icon: '⚙️' },
         { value: 'میکرل (Micrel)', icon: '⚙️' },
@@ -1146,7 +1146,7 @@ async function submitToGoogleSheet(sendingDiv) {
     source: 'چت‌بات'
   };
 
-  if (!WORKER_API_URL || WORKER_API_URL === 'https://pump-registration-api.ho3ein1ted8647.workers.dev/api/requests') {
+  if (!WORKER_API_URL || WORKER_API_URL === 'PASTE_YOUR_CLOUDFLARE_WORKER_URL_HERE') {
     showFailure(sendingDiv, 'آدرس Cloudflare Worker هنوز در فایل سایت وارد نشده است. ابتدا Worker را راه‌اندازی و آدرس آن را در کد قرار دهید.');
     return;
   }
